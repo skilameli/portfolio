@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanjeev Khanal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { font-family: 'Inter', sans-serif; }
+        .section-padding { padding: 6rem 0; }
+
+        /* --- 1. FINANCE Section (ROTATING NODES) --- */
+        .finance-vibe {
+            background-color: #F8FAFC; /* Light Blue-Gray Background */
+        }
+        .finance-grid {
+            position: relative;
+            width: 100%;
+            min-height: 800px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .finance-node-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(59, 130, 246, 0.4); /* Blue border */
+            border-radius: 0.5rem;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1E40AF; /* Dark Blue text */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 10;
+            will-change: transform, left, top; 
+            min-width: 130px; 
+            cursor: pointer;
+        }
+        .finance-node-card:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.7); 
+            color: #1D4ED8; 
+        }
+        .finance-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; 
+            z-index: 5; 
+        }
+        .finance-lines line, .finance-lines polyline {
+            stroke: #3B82F6; /* Blue-500 color for connections */
+            stroke-width: 1.5;
+            opacity: 0.6;
+            filter: drop-shadow(0 0 1px rgba(59, 130, 246, 0.5));
+        }
+
+        /* --- 2. SYSTEM DESIGN Section (3D PERSPECTIVE GRID) - LIGHT MODE --- */
+        .design-vibe {
+            background-color: #FFFFFF; /* White background for light contrast */
+            color: #374151; /* Dark text */
+            overflow: hidden;
+        }
+        .design-grid-container {
+            /* Create 3D space */
+            perspective: 1200px;
+            perspective-origin: center top; 
+            width: 100%;
+            padding-bottom: 50px;
+        }
+        .design-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            transform: rotateX(25deg) translateZ(-150px); /* Tilt back and push into Z-space */
+            transform-style: preserve-3d;
+            
+            /* Apply a slight movement to suggest depth/flow */
+            animation: flowPerspective 120s linear infinite; 
+        }
+
+        @keyframes flowPerspective {
+            0% { transform: rotateX(25deg) translateZ(-150px); }
+            50% { transform: rotateX(27deg) translateZ(-160px); }
+            100% { transform: rotateX(25deg) translateZ(-150px); }
+        }
+
+        .design-node-card {
+            background-color: rgba(249, 250, 251, 0.9); /* Off-white/Light card */
+            border: 2px solid rgba(59, 130, 246, 0.3); /* Light Blue Border */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            transition: all 0.4s ease;
+            cursor: default;
+            
+            /* Slanted text/card effect */
+            transform: skewX(-5deg) skewY(2deg);
+        }
+        .design-node-card:hover {
+            background-color: #E0F2FE; /* Very light blue on hover */
+            transform: skewX(0deg) skewY(0deg) scale(1.05); /* Straighten and enlarge */
+            border-color: #3B82F6; /* Blue */
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3); /* Blue glow */
+        }
+        .design-node-card h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1D4ED8; /* Dark Blue text */
+            transform: skewX(5deg) skewY(-2deg); /* Counter-skew text to make it readable */
+            transition: transform 0.4s ease;
+        }
+        .design-node-card:hover h4 {
+            transform: skewX(0deg) skewY(0deg);
+        }
+        .design-node-card p {
+            color: #4B5563; /* Medium Dark Gray */
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+        .design-icon {
+            color: #3B82F6; /* Blue icon */
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* --- 3. EXPLORATION Section (The Box) --- */
+        .exploration-vibe {
+            background-color: #F9FAFB; /* Very light gray */
+            position: relative;
+            overflow: hidden; 
+        }
+        .concept-box-container {
+            position: relative;
+            width: 900px; /* Fixed width for the visual box structure */
+            max-width: 95%; /* Adjust for smaller screens */
+            margin: 0 auto;
+            min-height: 600px;
+            padding: 2rem;
+            /* Ensure the absolute children are contained */
+        }
+
+        .the-box {
+            width: 100%;
+            height: 500px;
+            background-color: #FFFFFF;
+            border: 4px solid #3B82F6; /* Primary Blue border */
+            border-radius: 1.5rem;
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.25);
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-around;
+            gap: 1rem;
+        }
+        
+        .in-box-card {
+            width: 30%; /* Three cards per row on desktop */
+            min-width: 150px;
+            padding: 1rem;
+            background-color: #EBF8FF; /* Light Blue-50 */
+            border: 1px solid #93C5FD; /* Light Blue-300 */
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            color: #1E40AF;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            /* Centering content vertically */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .in-box-card:hover {
+            transform: translateY(-3px);
+            background-color: #DBEAFE; /* Blue-100 */
+        }
+
+        .out-of-box-card {
+            position: absolute;
+            width: 250px;
+            /* Radial background for a conceptual, fading feel */
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.15), rgba(167, 139, 250, 0)); 
+            border: 2px dashed #8B5CF6; /* Dashed Purple border for abstraction */
+            border-radius: 9999px; /* Pill shape */
+            padding: 1.5rem 1rem;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #5B21B6; /* Dark Purple */
+            z-index: 20;
+            cursor: help;
+            transition: all 0.5s;
+            backdrop-filter: blur(1px); /* Slight blur effect */
+        }
+        .out-of-box-card:hover {
+            background: rgba(167, 139, 250, 0.3);
+            box-shadow: 0 0 20px #8B5CF6;
+        }
+        
+        /* Positioning the out-of-box cards relative to the concept-box-container */
+        #out-1 { top: 0px; left: -100px; transform: rotate(-8deg); } 
+        #out-2 { bottom: 50px; right: -50px; transform: rotate(10deg); }
+        #out-3 { top: 30%; left: 80%; transform: rotate(5deg); } 
+        
+        @media (max-width: 1024px) {
+            .concept-box-container {
+                min-height: 700px;
+                width: 95%;
+            }
+            .the-box {
+                height: 550px;
+                padding: 1rem;
+            }
+            .in-box-card {
+                width: 45%; /* Two cards per row on tablet */
+                margin: 0.5rem 0;
+            }
+            .out-of-box-card {
+                width: 180px;
+                padding: 1rem 0.5rem;
+                font-size: 0.8rem;
+            }
+            #out-1 { top: -20px; left: -20px; transform: rotate(-5deg); }
+            #out-2 { bottom: 0px; right: -50px; transform: rotate(8deg); }
+            #out-3 { top: 15%; left: 70%; transform: rotate(3deg); }
+        }
+
+        @media (max-width: 640px) {
+             .concept-box-container {
+                min-height: 800px;
+                padding: 1rem 0;
+            }
+            .the-box {
+                height: auto;
+                padding: 1rem;
+            }
+            .in-box-card {
+                width: 100%; /* Single column on mobile */
+                margin: 0.5rem 0;
+            }
+             .out-of-box-card {
+                width: 150px;
+                padding: 0.75rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            #out-1 { top: -20px; left: 0px; transform: rotate(-5deg); }
+            #out-2 { bottom: 0px; right: -20px; transform: rotate(8deg); }
+            #out-3 { top: 25%; left: 50%; transform: rotate(3deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <!-- Navigation --><nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-lg border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <a href="#hero" class="text-2xl font-extrabold text-indigo-600 tracking-tight">S. KHANAL</a>
+            <div class="hidden md:flex space-x-8 text-sm font-medium uppercase">
+                <a href="#finance" class="text-gray-700 hover:text-indigo-600 transition duration-300">Finance</a>
+                <a href="#design" class="text-gray-700 hover:text-indigo-600 transition duration-300">System Design</a>
+                <a href="#exploration" class="text-gray-700 hover:text-indigo-600 transition duration-300">Exploration</a>
+                <a href="#contact" class="text-gray-700 hover:text-indigo-600 transition duration-300">Connect</a>
+            </div>
+            <!-- Mobile Menu Toggle --><button class="md:hidden text-gray-700 hover:text-indigo-600 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section --><header id="hero" class="bg-gray-100 pt-24 pb-32 text-center border-b border-gray-200">
+        <div class="max-w-4xl mx-auto px-6">
+            <p class="text-lg font-semibold text-indigo-600 uppercase mb-3 tracking-widest">Architecting Robust Solutions</p>
+            <h1 class="text-4xl md:text-5xl font-bold mb-5 leading-tight tracking-tighter text-gray-800">
+                The Nexus of Compliance and System Logic
+            </h1>
+            <h2 class="text-xl md:text-2xl font-light text-gray-600 mb-10 max-w-3xl mx-auto">
+                I blend the rigorous compliance of Chartered Accountancy Training with the analytical creativity of a System Designer, offering a holistic approach to building scalable digital solutions.
+            </h2>
+            <a href="#contact" class="inline-block px-10 py-4 text-lg font-bold bg-indigo-600 text-white rounded-xl shadow-2xl hover:bg-indigo-700 transition duration-300 transform hover:scale-[1.02]">
+                Initiate Project Discussion
+            </a>
+        </div>
+    </header>
+
+    <!-- 1. FINANCE Section: The Data-Driven Vibe (ROTATIONAL FLOW) --><section id="finance" class="finance-vibe section-padding border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-sm font-semibold uppercase text-blue-600 tracking-wider">The P&L Perspective: Ecosystem in Motion</span>
+                <h3 class="text-4xl font-extrabold text-gray-900 mt-2">Financial Architecture: Perpetual Discipline</h3>
+                <p class="text-xl text-gray-500 mt-4 max-w-3xl mx-auto">
+                    A Chartered Accountancy mindset ensures every system is built on an immovable foundation of financial reality. **Observe the cyclical nature of fiscal control.**
+                </p>
+            </div>
+            
+            <div class="finance-grid">
+                <!-- SVG layer for connections --><svg id="finance-connections" class="finance-lines" viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid meet"></svg>
+
+                <!-- 15 Rotating Finance Nodes -->
+                <div id="fcard-1" class="finance-node-card">P&L Tracking</div>
+                <div id="fcard-2" class="finance-node-card">Balance Sheet Integrity</div>
+                <div id="fcard-3" class="finance-node-card">Cash Flow Modeling</div>
+                <div id="fcard-4" class="finance-node-card">Tax Compliance & Planning</div>
+                <div id="fcard-5" class="finance-node-card">IFRS/NFRS Standards</div>
+                <div id="fcard-6" class="finance-node-card">Cost Center Efficiency</div>
+                <div id="fcard-7" class="finance-node-card">Budgeting Automation</div>
+                <div id="fcard-8" class="finance-node-card">Working Capital Optimization</div>
+                <div id="fcard-9" class="finance-node-card">AR/AP Management</div>
+                <div id="fcard-10" class="finance-node-card">Treasury & Liquidity</div>
+                <div id="fcard-11" class="finance-node-card">Internal Audit Logic</div>
+                <div id="fcard-12" class="finance-node-card">Financial Risk Modeling</div>
+                <div id="fcard-13" class="finance-node-card">MIS Reporting</div>
+                <div id="fcard-14" class="finance-node-card">Fixed Assets Registry</div>
+                <div id="fcard-15" class="finance-node-card">Corporate Governance</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SYSTEM DESIGN Section: 3D PERSPECTIVE GRID (Light Mode) --><section id="design" class="design-vibe section-padding border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-sm font-semibold uppercase text-blue-600 tracking-wider">The Logical Flow Perspective</span>
+                <h3 class="text-4xl font-extrabold text-gray-900 mt-2">System Design: Deep Structure & Resilience</h3>
+                <p class="text-xl text-gray-600 mt-4 max-w-3xl mx-auto">
+                    Designing systems that are inherently scalable, fault-tolerant, and performance-driven. **Every node is a pillar of computational integrity.**
+                </p>
+            </div>
+
+            <div class="design-grid-container">
+                <div class="design-grid">
+                    <!-- Design Node 1: Frontend Design -->
+                    <div class="design-node-card">
+                        <svg class="design-icon w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        <h4>Frontend Design</h4>
+                        <p>Crafting intuitive user interfaces that prioritize usability, accessibility, and responsive performance across all devices.</p>
+                    </div>
+                    <!-- Design Node 2: Logic Integration -->
+                    <div class="design-node-card">
+                        <svg class="design-icon w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-10 8h20l-10-8h9l-10-8h9"></path></svg>
+                        <h4>Logic Integration</h4>
+                        <p>Seamlessly connecting business rules and application processes across various services and internal APIs.</p>
+                    </div>
+                    <!-- Design Node 3: Data Mapping -->
+                    <div class="design-node-card">
+                        <svg class="design-icon w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H7"/><path d="M19 12H5"/><path d="M15 19H9"/></svg>
+                        <h4>Data Mapping</h4>
+                        <p>Defining clear data schemas and transformations between user input, display layers, and persistence storage.</p>
+                    </div>
+                    <!-- Design Node 4: Database Structuring -->
+                    <div class="design-node-card">
+                        <svg class="design-icon w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                        <h4>Database Structuring</h4>
+                        <p>Designing efficient, normalized, or denormalized database architectures for speed, integrity, and query performance.</p>
+                    </div>
+                    <!-- Design Node 5: E-commerce -->
+                    <div class="design-node-card">
+                        <svg class="design-icon w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 12.8a2 2 0 0 0 2 1.6h9.72a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+                        <h4>E-commerce</h4>
+                        <p>Implementing reliable sales flows, secure payment gateway integration, and inventory management logic for retail platforms.</p>
+                    </div>
+                    <!-- Design Node 6: Website Planning -->
+                    <div class="design-node-card">
+                        <svg class="design-icon w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                        <h4>Website Planning</h4>
+                        <p>Establishing project scope, feature roadmaps, content hierarchy, and optimal technology stack selection for new sites.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. EXPLORATION Section: The Conceptual Vibe (The Box) --><section id="exploration" class="exploration-vibe section-padding border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+            <span class="text-sm font-semibold uppercase text-indigo-600 tracking-wider">Defining the Boundaries of Thought</span>
+            <h3 class="text-4xl font-extrabold text-gray-900 mt-2 mb-16">Exploration: Bounded Systems vs. Unbounded Abstraction</h3>
+            
+            <div class="concept-box-container">
+                
+                <!-- OUTSIDE THE BOX CONCEPTS (ABSOLUTE POSITIONED) -->
+                
+                <div id="out-1" class="out-of-box-card shadow-xl">
+                    What is the structure **beyond the Multiverse**? (Cosmology's Edge)
+                </div>
+                
+                <div id="out-2" class="out-of-box-card shadow-xl">
+                    What happens to consciousness **after death**? (Ultimate Boundary)
+                </div>
+
+                <div id="out-3" class="out-of-box-card shadow-xl">
+                    What exists **inside quarks and strings**? (Physicality's Base)
+                </div>
+
+                <!-- THE BOX (BOUNDED, LOGICAL SYSTEMS) -->
+                <div class="the-box">
+                    <h4 class="w-full text-2xl font-extrabold text-blue-800 mb-4">IN THE BOX: Logical and Bounded Systems</h4>
+                    <p class="w-full text-md text-gray-600 mb-6">
+                        Disciplines with established rules, verifiable facts, and defined frameworks.
+                    </p>
+
+                    <div class="in-box-card">
+                        <svg class="h-6 w-6 mb-2 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M12 2c-3.31 0-6 2.69-6 6s6 6 6 6 6-2.69 6-6-2.69-6-6-6zM3 12h18"/></svg>
+                        Human Anatomy
+                    </div>
+                    
+                    <div class="in-box-card">
+                        <svg class="h-6 w-6 mb-2 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v5M12 17v5M5 12h5M14 12h5M19.07 4.93l-2.83 2.83M7.76 16.24L4.93 19.07M16.24 7.76l2.83-2.83M4.93 19.07l2.83-2.83"/></svg>
+                        Particle Physics (Standard Model)
+                    </div>
+
+                    <div class="in-box-card">
+                         <svg class="h-6 w-6 mb-2 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="10" width="18" height="12" rx="2" ry="2"/><path d="M12 2v8M9 22h6"/></svg>
+                        Legal Systems & Frameworks
+                    </div>
+                    
+                    <div class="in-box-card">
+                         <svg class="h-6 w-6 mb-2 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                        Social Studies & Economics
+                    </div>
+
+                    <div class="in-box-card">
+                        <svg class="h-6 w-6 mb-2 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3.53-3.53a3.81 3.81 0 0 0 0-5.39C20.84 2.86 19.22 2 17.5 2H17"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3.53 3.53a3.81 3.81 0 0 0 0 5.39C3.16 21.14 4.78 22 6.5 22H7"/></svg>
+                        Cloud Resourcing
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#" class="mt-16 inline-block px-8 py-3 font-bold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 transition duration-300 transform hover:scale-[1.02] shadow-xl">
+                Explore The Unknowable
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact & Footer --><footer id="contact" class="pt-16 pb-16 bg-white border-t border-gray-200">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h3 class="text-4xl font-bold text-indigo-600 mb-6">Let's Connect and Build.</h3>
+            <p class="text-xl mb-10 text-gray-700">
+                I am ready to bring financial discipline and architectural elegance to your next system.
+            </p>
+
+            <a href="mailto:your.email@example.com" class="inline-flex items-center space-x-3 px-8 py-4 text-xl font-bold bg-indigo-600 text-white rounded-xl shadow-2xl hover:bg-indigo-700 transition duration-300 transform hover:scale-[1.02]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <span>Email Me Directly</span>
+            </a>
+            
+            <p class="text-sm text-gray-400 mt-12">
+                &copy; 2024 Sanjeev Khanal. Designed with rigor and logical intent.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        let rotationAnimationId = null;
+        let lastTime = 0;
+        
+        // --- Configuration for Finance Rotational Flow ---
+        const financeConnectionsConfig = {
+            // Define core financial flows
+            detailed: [
+                ['fcard-1', 'fcard-5'], // P&L -> IFRS/NFRS (Compliance drives reporting)
+                ['fcard-2', 'fcard-12'], // Balance Sheet -> Risk Modeling (B/S is input for risk)
+                ['fcard-3', 'fcard-10'], // Cash Flow -> Treasury (Cash flow dictates liquidity)
+                ['fcard-7', 'fcard-6'], // Budgeting -> Cost Center (Budgeting allocates costs)
+                ['fcard-11', 'fcard-15'], // Internal Audit -> Governance (Audit enforces governance)
+                ['fcard-9', 'fcard-8'], // AR/AP -> Working Capital (Key components of WC)
+                ['fcard-14', 'fcard-2'], // Fixed Assets -> Balance Sheet (A major B/S item)
+                ['fcard-1', 'fcard-13'], // P&L -> MIS Reporting (P&L feeds management reports)
+                ['fcard-4', 'fcard-13'], // Tax Compliance -> MIS Reporting (Tax reporting is a key output)
+            ]
+        };
+
+        // --- Utility Functions ---
+
+        // Function to get the center of an element relative to the SVG's coordinate system
+        function getElementCenter(elementId, gridRect) {
+            const el = document.getElementById(elementId);
+            if (!el) return { x: 0, y: 0 };
+            
+            const rect = el.getBoundingClientRect();
+            
+            // Adjust position relative to the grid container's top-left corner
+            return {
+                x: ((rect.left + rect.width / 2) - gridRect.left),
+                y: ((rect.top + rect.height / 2) - gridRect.top)
+            };
+        }
+
+        // Main function to draw the system connections
+        function drawFinanceConnections() {
+            const svg = document.getElementById('finance-connections');
+            if (!svg) return;
+
+            const grid = document.querySelector('.finance-grid');
+            const gridRect = grid.getBoundingClientRect();
+            
+            // Update SVG dimensions to match the grid container
+            svg.setAttribute('width', gridRect.width);
+            svg.setAttribute('height', gridRect.height);
+            svg.setAttribute('viewBox', `0 0 ${gridRect.width} ${gridRect.height}`);
+
+            svg.innerHTML = ''; // Clear existing lines
+
+            financeConnectionsConfig.detailed.forEach(([fromId, toId]) => {
+                const start = getElementCenter(fromId, gridRect);
+                const end = getElementCenter(toId, gridRect);
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', start.x);
+                line.setAttribute('y1', start.y);
+                line.setAttribute('x2', end.x);
+                line.setAttribute('y2', end.y);
+                svg.appendChild(line);
+            });
+        }
+
+        // --- Rotation Logic ---
+
+        function initializeCardPositions(gridRect) {
+            // Determine the radius based on the smaller dimension to fit screen
+            const R_OUTER = Math.min(gridRect.width, gridRect.height) * 0.4;
+            const R_INNER = R_OUTER * 0.55; 
+            const R_MID = R_OUTER * 0.8;
+            const centerX = gridRect.width / 2;
+            const centerY = gridRect.height / 2;
+
+            const allCards = document.querySelectorAll('.finance-node-card');
+            
+            // 6 cards on outer circle, 5 on mid, 4 on inner
+            const angleIncrementOuter = (2 * Math.PI) / 6; 
+            const angleIncrementMid = (2 * Math.PI) / 5;
+            const angleIncrementInner = (2 * Math.PI) / 4; 
+            
+            let outerIndex = 0;
+            let midIndex = 0;
+            let innerIndex = 0;
+
+            // Define card placement based on financial category
+            const cardPlacement = [
+                // Outer Ring (Compliance/Risk) - 6 Cards
+                { id: 'fcard-5', type: 'outer' }, { id: 'fcard-15', type: 'outer' }, 
+                { id: 'fcard-4', type: 'outer' }, { id: 'fcard-12', type: 'outer' },
+                { id: 'fcard-11', type: 'outer' }, { id: 'fcard-14', type: 'outer' }, 
+                
+                // Mid Ring (Operations/Working Capital) - 5 Cards
+                { id: 'fcard-8', type: 'mid' }, { id: 'fcard-9', type: 'mid' }, 
+                { id: 'fcard-6', type: 'mid' }, { id: 'fcard-7', type: 'mid' },
+                { id: 'fcard-10', type: 'mid' }, 
+
+                // Inner Ring (Core Financials/Output) - 4 Cards
+                { id: 'fcard-1', type: 'inner' }, { id: 'fcard-2', type: 'inner' },
+                { id: 'fcard-3', type: 'inner' }, { id: 'fcard-13', type: 'inner' } 
+            ];
+            
+            allCards.forEach(card => {
+                const placement = cardPlacement.find(p => p.id === card.id);
+                if (!placement) return;
+
+                let R, angle;
+                let speed = 0;
+
+                if (placement.type === 'outer') {
+                    R = R_OUTER;
+                    angle = outerIndex * angleIncrementOuter; 
+                    speed = -0.00008; // Slower, Counter-clockwise
+                    outerIndex++;
+                } else if (placement.type === 'mid') {
+                    R = R_MID;
+                    angle = midIndex * angleIncrementMid + (Math.PI / 5); // Offset
+                    speed = 0.0001; // Medium, Clockwise
+                    midIndex++;
+                } else { // inner
+                    R = R_INNER;
+                    angle = innerIndex * angleIncrementInner;
+                    speed = 0.00015; // Faster, Clockwise
+                    innerIndex++;
+                }
+
+                // Store dynamic state on the element
+                card._angle = angle;
+                card._radius = R;
+                card._speed = speed; 
+                
+                // Initial position setting
+                const cardWidth = card.offsetWidth / 2;
+                const cardHeight = card.offsetHeight / 2;
+
+                card.style.left = `${centerX + R * Math.cos(angle) - cardWidth}px`;
+                card.style.top = `${centerY + R * Math.sin(angle) - cardHeight}px`;
+            });
+        }
+
+        function rotationLoop(time) {
+            if (rotationAnimationId === null) return; 
+
+            const deltaTime = time - lastTime;
+            lastTime = time;
+
+            const grid = document.querySelector('.finance-grid');
+            const gridRect = grid.getBoundingClientRect();
+            const centerX = gridRect.width / 2;
+            const centerY = gridRect.height / 2;
+
+            const cards = document.querySelectorAll('.finance-node-card');
+            
+            cards.forEach(card => {
+                if (typeof card._angle === 'undefined') return; 
+
+                // Update angle based on speed and time
+                card._angle += card._speed * deltaTime;
+                
+                const cardWidth = card.offsetWidth / 2;
+                const cardHeight = card.offsetHeight / 2;
+                
+                // Calculate new position using polar to Cartesian coordinates
+                const newLeft = centerX + card._radius * Math.cos(card._angle) - cardWidth;
+                const newTop = centerY + card._radius * Math.sin(card._angle) - cardHeight;
+
+                // Apply position
+                card.style.left = `${newLeft}px`;
+                card.style.top = `${newTop}px`;
+            });
+
+            // Redraw lines to follow the new positions
+            drawFinanceConnections();
+            
+            rotationAnimationId = requestAnimationFrame(rotationLoop);
+        }
+
+        function startRotationLoop() {
+            if (rotationAnimationId !== null) return;
+            
+            const grid = document.querySelector('.finance-grid');
+            if (!grid) return;
+
+            const gridRect = grid.getBoundingClientRect();
+            
+            initializeCardPositions(gridRect); // Set initial circular positions
+            
+            lastTime = performance.now();
+            rotationAnimationId = requestAnimationFrame(rotationLoop);
+        }
+
+        function stopRotationLoop() {
+            if (rotationAnimationId) {
+                cancelAnimationFrame(rotationAnimationId);
+                rotationAnimationId = null;
+            }
+        }
+
+        // --- Event Listeners and Initialization ---
+        window.addEventListener('resize', () => {
+             // Re-start the loop on resize to re-center the circles correctly
+            stopRotationLoop();
+            startRotationLoop();
+        });
+        
+        window.addEventListener('load', () => {
+            // Start the rotational visualization immediately
+            startRotationLoop(); 
+        });
+    </script>
+
+</body>
+</html>
