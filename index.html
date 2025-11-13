@@ -3,268 +3,654 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sanjeev Khanal's portfolio: Strategic Designer and Financial Systems Analyst specializing in platform architecture, scalability, and audit-level traceability for business systems.">
     <title>Sanjeev Khanal</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    <!-- Load Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Custom styles for professional, clean look */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
         :root {
-            --primary-color: #1f2937; /* Dark Gray/Slate */
-            --accent-color: #3b82f6; /* Blue */
-            --text-color: #374151; /* Medium Gray */
-            --bg-color: #f9fafb; /* Light Gray */
+            --primary-blue: #1E40AF; 
+            --accent-light: #F9FAFB; 
+            --text-dark: #1F2937; 
+            /* Modal background is no longer blue, using a subtle white/gray */
         }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            color: var(--text-dark);
+            background-color: var(--accent-light);
+            min-height: 100vh;
         }
-        .section-header {
-            border-bottom: 2px solid var(--accent-color);
-            display: inline-block;
-            padding-bottom: 0.5rem;
-            margin-bottom: 2rem;
-            color: var(--primary-color);
-            font-weight: 700;
+
+        /* ------------------------------------------- */
+        /* Custom Modal and Overlay Styles */
+        /* ------------------------------------------- */
+
+        /* Full screen overlay for welcome and modal background */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Welcome screen is designed to use the full size, modal uses the filter */
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
-        .project-card {
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            border-left: 4px solid var(--accent-color);
+
+        /* UPDATED: Modal Overlay is now subtle white/gray to preserve the light theme */
+        #content-modal-overlay.overlay.active {
+            background-color: rgba(249, 250, 251, 0.95); /* Light, semi-transparent white/gray */
+            backdrop-filter: none; /* Removed blur effect */
         }
-        .project-card:hover {
-            transform: translateY(-4px);
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* The main floating dialogue box for content modules */
+        .dialog-box {
+            background-color: white;
+            border-radius: 1rem;
+            /* Strong shadow makes the modal look like it's floating */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+            max-width: 90%;
+            width: 800px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.9);
+            transition: transform 0.4s ease;
+        }
+
+        #content-modal-overlay.overlay.active .dialog-box {
+            transform: scale(1);
+        }
+
+        /* Utility class for fading transition */
+        .fade-transition {
+            transition: opacity 0.5s ease;
+        }
+
+        /* Style for the skill/project cards */
+        .skill-card {
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .skill-card:hover {
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+
     </style>
 </head>
-<body class="antialiased">
+<body class="p-0">
 
-    <div class="max-w-7xl mx-auto p-4 sm:p-8 lg:p-12">
-        <!-- I. Hero Section - UPDATED with border and shadow-xl -->
-        <header id="hero" class="text-center py-16 sm:py-24 mb-12 bg-white rounded-xl shadow-xl border border-gray-200">
+    <!-- ------------------------------------------- -->
+    <!-- 1. Welcome Overlay (Initial Screen - Full Page) -->
+    <!-- ------------------------------------------- -->
+    <div id="welcome-overlay" class="overlay active">
+        <!-- Main Container: Full Width, Full Height, Responsive Split -->
+        <div class="w-full h-full flex flex-col md:flex-row">
             
-            <!-- Rounded Profile Picture -->
-            <img 
-                src="sanjeev.webp" 
-                alt="Sanjeev Khanal Profile Picture" 
-                class="w-32 h-32 rounded-full mx-auto mb-6 object-cover border-4 border-white shadow-md"
-                onerror="this.onerror=null; this.src='https://placehold.co/128x128/3b82f6/ffffff?text=SK';"
-            >
-
-            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900 mb-4">
-                Sanjeev Khanal
-            </h1>
-            <h2 class="text-xl sm:text-2xl font-medium text-gray-700 max-w-3xl mx-auto mb-6">
-                Focus on Structure, Scale, and Traceability
-            </h2>
-            <p class="text-lg sm:text-xl text-gray-500 max-w-4xl mx-auto mb-8">
-                Using a foundation in <strong>financial and auditing rigor</strong> to design resilient, transparent, and self-sufficient business platforms.
-            </p>
-            <!-- CTAs -->
-            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mx-4">
-                <a href="#projects" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition duration-150 ease-in-out">
-                    <i data-lucide="layout-grid" class="w-5 h-5 mr-2"></i>
-                    Explore My Work & Projects
-                </a>
-                <a href="https://wa.me/9779864278144" target="_blank" class="inline-flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50 transition duration-150 ease-in-out">
-                    <i data-lucide="message-square" class="w-5 h-5 mr-2"></i>
-                    Connect on Whatsapp
-                </a>
-            </div>
-        </header>
-
-        <!-- II. Skills and Experience -->
-        <section id="skills" class="py-12 bg-white rounded-xl shadow-lg mb-12 p-8 sm:p-12">
-            <h2 class="section-header text-3xl">Skills and Experience</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-                <!-- Skill 1: Updated with border and shadow-md -->
-                <div class="flex flex-col p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-md">
-                    <i data-lucide="layers" class="w-8 h-8 text-blue-600 mb-4"></i>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Platform Strategy & Scalability</h3>
-                    <p class="text-gray-600 text-justify">Architecting self-sufficient, multi-sided platforms and integrated logistics ecosystems capable of large-scale growth (demonstrated in <a href="https://khanal.co">khanal.co</a>).</p>
-                </div>
-                <!-- Skill 2: Updated with border and shadow-md -->
-                <div class="flex flex-col p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-md">
-                    <i data-lucide="shield-check" class="w-8 h-8 text-blue-600 mb-4"></i>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Audit-Level Traceability</h3>
-                    <p class="text-gray-600 text-justify">Integrating strict financial and auditing rigor into software design to ensure transactional accountability and transparency in Fintech/SaaS. (demonstrated in <a href="https://1pana.com">1pana</a>).</p>
-                </div>
-                <!-- Skill 3: Updated with border and shadow-md -->
-                <div class="flex flex-col p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-md">
-                    <i data-lucide="cog" class="w-8 h-8 text-blue-600 mb-4"></i>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Organizational Structuring</h3>
-                    <p class="text-gray-600 text-justify">Applying systems theory and advanced financial methodologies to solve complex business structure problems and optimize organizational resilience (demonstrated in <a href="https://theawarenessframework.github.io/website">book</a>).</p>
+            <!-- LEFT PANEL (Profile & Contact) -->
+            <div class="md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12 bg-gray-50 text-center">
+                
+                <!-- Profile Image (Placeholder for sanjeev.webp) -->
+                <!-- NOTE: Using placehold.co as local images cannot be loaded -->
+                <img src="sanjeev.jpg" 
+                     alt="Sanjeev Khanal" 
+                     class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover shadow-xl mb-6 border-4 border-indigo-700 transition transform hover:scale-[1.05]">
+                
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2">Sanjeev Khanal</h1>
+                
+                <!-- Short Description -->
+                <p class="text-m text-gray-600 max-w-sm mb-6 md:mb-8 px-4">
+                    Accountant, Designer and Systems Analyst
+                </p>
+                
+                <!-- Contact Button (Primary Action) - Hidden on Mobile, Visible on Desktop -->
+                <button onclick="openModal('contact')" class="hidden md:inline-block px-8 py-3 bg-red-600 text-white font-semibold rounded-full shadow-lg hover:bg-red-700 transition transform hover:scale-[1.05] mb-8 md:mb-0">
+                    Contact Me
+                </button>
+                
+                <!-- MOBILE NAVIGATION BUTTONS (Visible only on mobile for minimal view) -->
+                <div class="md:hidden grid grid-cols-2 gap-4 mx-auto max-w-xs mt-8">
+                    <button onclick="openModal('skills')" class="px-3 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition">Skills</button>
+                    <button onclick="openModal('projects')" class="px-3 py-2 bg-indigo-700 text-white text-sm font-semibold rounded-lg hover:bg-indigo-800 transition">Projects</button>
+                    <button onclick="openModal('foundation')" class="px-3 py-2 bg-yellow-600 text-white text-sm font-semibold rounded-lg hover:bg-yellow-700 transition">Foundation</button>
+                    <!-- Added Connect button for mobile consistency -->
+                    <button onclick="openModal('contact')" class="px-3 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 transition">Connect</button>
                 </div>
             </div>
-        </section>
 
-        <!-- III. Key Strategic Projects -->
-        <section id="projects" class="py-12">
-            <h2 class="section-header text-3xl">Key Strategic Projects</h2>
-
-            <div class="space-y-10">
-
-                <!-- Project A: 1pana - Updated with border and shadow-xl -->
-                <div class="project-card bg-white p-8 rounded-xl shadow-xl border border-gray-200">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900 flex items-center">
-                            <i data-lucide="wallet" class="w-6 h-6 mr-3 text-blue-600"></i>
-                            Project A: 1pana <span class="text-base font-normal ml-3 text-gray-500">(Fintech & Accounting System Design)</span>
-                        </h3>
+            <!-- RIGHT PANEL (Desktop Navigation Grid - Hidden on mobile) -->
+            <div class="hidden md:w-1/2 md:flex flex-col justify-center p-8 md:p-12 bg-white">
+                <h2 class="text-3xl font-bold text-indigo-700 mb-5">System Modules</h2>
+                
+                <div class="grid grid-cols-1 gap-6 max-w-xl">
+                    
+                    <!-- Skills -->
+                    <div onclick="openModal('skills')" class="group p-5 bg-blue-50 hover:bg-blue-100 rounded-xl border border-blue-200 transition skill-card">
+                        <p class="font-bold text-xl text-blue-800">Skills</p>
+                        <p class="text-sm text-gray-600 mt-1">This module highlights the skills acquired.</p>
                     </div>
                     
-                    <p class="text-sm font-medium text-blue-600 mb-3">Role Highlight: System Co-designer & Financial Architect.</p>
-                    
-                    <p class="mb-4 text-gray-600">
-                        <strong>Problem Solved:</strong> Simplifying SME accounting while ensuring professional-level traceability and transparency.
-                    </p>
-                    
-                    <h4 class="font-semibold text-gray-700 mb-2">Key Features:</h4>
-                    <ul class="list-disc list-inside space-y-1 pl-4 text-gray-600">
-                        <li>Mobile/Web dashboard for bill/invoice upload.</li>
-                        <li>Backend logic tying every journal entry directly to its original source document.</li>
-                        <li>Real-time financial visualization dashboard.</li>
-                    </ul>
-
-                    <p class="mt-4 text-sm italic text-gray-500">
-                        <strong>Strategic Takeaway:</strong> This showcases my ability to translate complex financial requirements into clean, user-friendly, and technically sound product features.
-                    </p>
-
-                    <a href="https://1pana.com" target="_blank" class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 transition">
-                        <i data-lucide="external-link" class="w-4 h-4 mr-2"></i>
-                        Visit 1pana
-                    </a>
-                </div>
-
-                <!-- Project B: khanal.co Prototype - Updated with border and shadow-xl -->
-                <div class="project-card bg-white p-8 rounded-xl shadow-xl border border-gray-200">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900 flex items-center">
-                            <i data-lucide="shopping-cart" class="w-6 h-6 mr-3 text-blue-600"></i>
-                            Project B: App Prototype <span class="text-base font-normal ml-3 text-gray-500">(E-commerce & Logistics Platform Strategy)</span>
-                        </h3>
+                    <!-- Projects -->
+                    <div onclick="openModal('projects')" class="group p-5 bg-indigo-50 hover:bg-indigo-100 rounded-xl border border-indigo-200 transition skill-card">
+                        <p class="font-bold text-xl text-indigo-800">Projects</p>
+                        <p class="text-sm text-gray-600 mt-1">This module highlights involved projects.</p>
                     </div>
                     
-                    <p class="text-sm font-medium text-blue-600 mb-3">Role Highlight: Platform Strategist & Ecosystem Designer.</p>
-                    
-                    <p class="mb-4 text-gray-600">
-                        <strong>Concept Summary:</strong> A self-sustaining, community-driven platform integrating social commerce with a built-in, independent delivery network.
-                    </p>
-                    
-                    <h4 class="font-semibold text-gray-700 mb-2">Key Strategic Decisions:</h4>
-                    <ul class="list-disc list-inside space-y-1 pl-4 text-gray-600">
-                        <li>Integration of social feeds and e-commerce for organic product visibility.</li>
-                        <li>Scalable Delivery Model: Enabling independent users to toggle into "Delivery Partner" mode to create an agile, low-overhead logistics layer.</li>
-                        <li>Internal chat system for direct buyer/seller communication.</li>
-                    </ul>
-
-                    <p class="mt-4 text-sm italic text-gray-500">
-                        <strong>Strategic Takeaway:</strong> This demonstrates forward-thinking product strategy, an understanding of logistics, and the design of complex, multi-sided market ecosystems.
-                    </p>
-
-                    <a href="https://khanal.co" target="_blank" class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 transition">
-                        <i data-lucide="external-link" class="w-4 h-4 mr-2"></i>
-                        View Prototype
-                    </a>
-                </div>
-
-                <!-- Project C: The Awareness Framework - Updated with border and shadow-xl -->
-                <div class="project-card bg-white p-8 rounded-xl shadow-xl border border-gray-200">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900 flex items-center">
-                            <i data-lucide="book-open" class="w-6 h-6 mr-3 text-blue-600"></i>
-                            Project C: The Awareness Framework <span class="text-base font-normal ml-3 text-gray-500">(Analytical Depth & Systems Theory)</span>
-                        </h3>
+                    <!-- Foundation -->
+                    <div onclick="openModal('foundation')" class="group p-5 bg-yellow-50 hover:bg-yellow-100 rounded-xl border border-yellow-200 transition skill-card">
+                        <p class="font-bold text-xl text-yellow-800">Qualification</p>
+                        <p class="text-sm text-gray-600 mt-1">This module shows formal education and experience.</p>
                     </div>
                     
-                    <p class="text-sm font-medium text-blue-600 mb-3">Role Highlight: Systemic Theorist & Conceptual Author.</p>
-                    
-                    <p class="mb-4 text-gray-600">
-                        <strong>Focus:</strong> A published work exploring complex and self-organizing systems, drawing connections between Information Theory, Cybernetics, and Phenomenological Philosophy. The work focused on expansion and containment.
-                    </p>
-                    
-                    <h4 class="font-semibold text-gray-700 mb-2">Key Insight:</h4>
-                    <p class="text-gray-600">
-                        The book develops a <strong>Framework of Awareness</strong> that analyzes how observation and perspective dictate the structure and unfolding of experience within any system.
-                    </p>
-
-                    <p class="mt-4 text-sm italic text-gray-500">
-                        <strong>Strategic Takeaway:</strong> This demonstrates exceptional capacity for rigorous, long-term conceptual design and modeling of complex, multi-variable environments. It provides the intellectual foundation for structuring scalable business platforms that are inherently adaptive and self-regulating.
-                    </p>
-
-                    <a href="https://theawarenessframework.github.io/website" target="_blank" class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 transition">
-                        <i data-lucide="external-link" class="w-4 h-4 mr-2"></i>
-                        Read the Framework
-                    </a>
+                    <!-- Connect/Contact card remains removed from the desktop grid -->
                 </div>
             </div>
-        </section>
-
-        <!-- IV. Professional Foundation - UPDATED with border and shadow-xl -->
-        <section id="foundation" class="py-12 bg-white rounded-xl shadow-xl border border-gray-200 mb-12 p-8 sm:p-12">
-            <h2 class="section-header text-3xl">Professional Foundation</h2>
-            
-            <p class="text-xl font-semibold text-gray-900 mt-6 mb-2">Semi-Qualified CA / Financial Systems Analyst</p>
-
-            <p class="text-gray-600 mb-6">
-                My professional journey began with three years of intensive articleship, establishing a strong foundation in core financial, compliance, and auditing procedures. Post-articleship, I've maintained proficiency through engagement-based freelancing in accounting and auditing, which provides a real-world, operational perspective that informs my strategic design work today. I now seek opportunities focused on high-level systemic structuring and platform strategy.
-            </p>
-
-            <h4 class="font-semibold text-gray-700 mb-3">Core Skills:</h4>
-            <div class="flex flex-wrap gap-3">
-                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">Audit & Compliance</span>
-                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">Financial Reporting</span>
-                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">Risk Assessment</span>
-                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">Systemic Due Diligence</span>
-            </div>
-
-            <a href="https://drive.google.com/file/d/1593r_6QQcY_9dFy63VHzE_NSA9qgdWHx/view?usp=sharing" target="_blank" class="mt-8 inline-flex items-center px-6 py-2 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-gray-600 hover:bg-gray-700 transition">
-                <i data-lucide="file-text" class="w-5 h-5 mr-2"></i>
-                View Full Resume/CV
-            </a>
-        </section>
-
-        <!-- V. Contact / Footer -->
-        <footer id="contact" class="text-center py-12 bg-gray-900 rounded-xl shadow-lg text-white">
-            <h2 class="text-3xl font-bold mb-4">Let's Connect</h2>
-            <p class="text-lg text-gray-300 mb-8 max-w-xl mx-auto">
-                Ready to structure your next scalable project? I'm available for strategic consultations and system design roles.
-            </p>
-
-            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-8">
-                <a href="mailto:mail@sanjeevkhanal.com.np" class="text-gray-300 hover:text-blue-400 transition flex items-center justify-center">
-                    <i data-lucide="mail" class="w-6 h-6 mr-2"></i>
-                    mail@sanjeevkhanal.com.np
-                </a>
-                <a href="https://wa.me/9779864278144" target="_blank" class="text-gray-300 hover:text-blue-400 transition flex items-center justify-center">
-                    <i data-lucide="message-square" class="w-6 h-6 mr-2"></i>
-                    +977-9864278144 (Whatsapp)
-                </a>
-            </div>
-            
-            <p class="mt-10 text-sm text-gray-500">
-                &copy; 2024 Sanjeev Khanal. All Rights Reserved.
-            </p>
-        </footer>
-
+        </div>
     </div>
 
-    <!-- Initialize Lucide Icons -->
-    <script>
-        lucide.createIcons();
+    <!-- ------------------------------------------- -->
+    <!-- 2. Main Content Modal (The Dialogue Box) -->
+    <!-- ------------------------------------------- -->
+    <div id="content-modal-overlay" class="overlay">
+        <div class="dialog-box p-6 md:p-8 overflow-y-auto">
+            
+            <!-- Modal Header: Centered Title with Right-Aligned Icons -->
+            <div class="relative flex justify-end items-center mb-6 pb-4">
+                
+                <!-- Centered Title (using absolute position for perfect center) -->
+                <h2 id="modal-title" class="text-3xl font-extrabold text-gray-900 absolute left-1/2 transform -translate-x-1/2"></h2>
 
-        // Smooth scrolling for the primary CTA
-        document.querySelector('a[href="#projects"]').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+                <!-- Action Icons (right-aligned) -->
+                <div id="action-icons" class="flex space-x-2 z-10">
+                    <!-- Minimize/Back Icon (Generic handler) -->
+                    <button id="minimize-btn" onclick="handleMinimize()" class="text-gray-500 hover:text-gray-900 transition hidden" title="Back to categories">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-7 h-7">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                    <!-- Existing Close Icon -->
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-900 transition" title="Close module">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div id="modal-content" class="flex-grow pb-4 relative">
+                <!-- Content injected here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ------------------------------------------- -->
+    <!-- 3. Navigation Bar (Always visible after welcome) -->
+    <!-- ------------------------------------------- -->
+    <nav id="main-nav" class="hidden fixed top-0 left-0 right-0 bg-white shadow-lg z-40 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0">
+                    <span class="text-lg font-bold text-gray-800">Sanjeev Khanal</span>
+                </div>
+                <!-- Mini Nav for Modal access -->
+                <div class="flex space-x-2 sm:space-x-4">
+                    <button onclick="openModal('skills')" class="text-gray-600 hover:text-indigo-700 text-sm font-medium py-2 rounded-md transition duration-300">Skills</button>
+                    <button onclick="openModal('projects')" class="text-gray-600 hover:text-indigo-700 text-sm font-medium py-2 rounded-md transition duration-300">Projects</button>
+                    <button onclick="openModal('foundation')" class="text-gray-600 hover:text-indigo-700 text-sm font-medium py-2 rounded-md transition duration-300">Qualification</button>
+                    <button onclick="openModal('contact')" class="text-gray-600 hover:text-indigo-700 text-sm font-medium py-2 rounded-md transition duration-300">Connect</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ------------------------------------------- -->
+    <!-- 4. Data Content Templates (Hidden) -->
+    <!-- ------------------------------------------- -->
+    
+    <!-- Data: Skills -->
+    <template id="skills-content">
+        <!-- Card View (Initial Branched View) -->
+        <div id="skill-card-view" class="fade-transition">
+            <div class="grid grid-cols-2 gap-6">
+                <!-- Accounting -->
+                <div onclick="toggleSkillView(true, 'accounting')" class="skill-card p-6 bg-blue-50 hover:bg-blue-100 rounded-xl border border-blue-200 transition transform hover:scale-[1.02]">
+                    <p class="font-bold text-lg text-blue-800">Accounting & Audit</p>
+                    <p class="text-sm text-gray-600 mt-1">Recording, analysing and verifying financial records.</p>
+                </div>
+                <!-- Design -->
+                <div onclick="toggleSkillView(true, 'design')" class="skill-card p-6 bg-green-50 hover:bg-green-100 rounded-xl border border-green-200 transition transform hover:scale-[1.02]">
+                    <p class="font-bold text-lg text-green-800">System Design</p>
+                    <p class="text-sm text-gray-600 mt-1">Design of financial and business systems and models.</p>
+                </div>
+                <!-- Modelling -->
+                <div onclick="toggleSkillView(true, 'modelling')" class="skill-card p-6 bg-yellow-50 hover:bg-yellow-100 rounded-xl border border-yellow-200 transition transform hover:scale-[1.02]">
+                    <p class="font-bold text-lg text-yellow-800">System Modelling</p>
+                    <p class="text-sm text-gray-600 mt-1">Architectural modelling of complex systems & ecosystems.</p>
+                </div>
+                <!-- Strategy -->
+                <div onclick="toggleSkillView(true, 'strategy')" class="skill-card p-6 bg-red-50 hover:bg-red-100 rounded-xl border border-red-200 transition transform hover:scale-[1.02]">
+                    <p class="font-bold text-lg text-red-800">Strategic Alignment</p>
+                    <p class="text-sm text-gray-600 mt-1">Designing platforms for update,  change and scalability.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail View (Hidden by default) -->
+        <div id="skill-detail-view" class="fade-transition opacity-0 hidden pt-6">
+            <h4 id="skill-detail-title" class="text-2xl font-bold text-gray-900 mb-4 border-b pb-2"></h4>
+            <div id="skill-detail-description" class="text-gray-700 text-base space-y-4">
+                <!-- Details are dynamically populated here -->
+            </div>
+        </div>
+    </template>
+
+    <!-- Data: Projects (Refactored to Card and Detail View) -->
+    <template id="projects-content">
+        <!-- Card View (Initial Branched View) -->
+        <div id="project-card-view" class="fade-transition">
+            <div class="grid grid-cols-2 gap-6">
+                <!-- Project 1: 1pana -->
+                <div onclick="toggleProjectView(true, '1pana')" class="skill-card p-6 bg-indigo-50 hover:bg-indigo-100 rounded-xl border border-indigo-200 transition transform hover:scale-[1.02]">
+                    <p class="font-bold text-lg text-indigo-800">Fintech Project</p>
+                    <p class="text-sm text-gray-600 mt-1">1pana is an accounting software developed for SMEs.</p>
+                </div>
+                <!-- Project 2: khanal.co -->
+                <div onclick="toggleProjectView(true, 'khanal-co')" class="skill-card p-6 bg-teal-50 hover:bg-teal-100 rounded-xl border border-teal-200 transition transform hover:scale-[1.02]">
+                    <p class="font-bold text-lg text-teal-800">Socio-Commerce Project</p>
+                    <p class="text-sm text-gray-600 mt-1">This prototype is a scalable logistics & platform type project.</p>
+                </div>
+                <!-- Project 3: Framework -->
+                <div onclick="toggleProjectView(true, 'framework')" class="skill-card p-6 bg-orange-50 hover:bg-orange-100 rounded-xl border border-orange-200 transition transform hover:scale-[1.02]">
+                    <p class="font-bold text-lg text-orange-800">The Awareness Framework</p>
+                    <p class="text-sm text-gray-600 mt-1">This Book attempts conceptual and systematic modelling of reality.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail View (Hidden by default) -->
+        <div id="project-detail-view" class="fade-transition opacity-0 hidden pt-6">
+            <h4 id="project-detail-title" class="text-2xl font-bold text-gray-900 mb-2"></h4>
+            <p id="project-detail-subtitle" class="text-sm font-medium text-gray-500 mb-4 border-b pb-4"></p>
+            <div id="project-detail-description" class="text-gray-700 text-base space-y-4">
+                <!-- Details are dynamically populated here -->
+            </div>
+        </div>
+    </template>
+
+    <!-- Data: Foundation -->
+    <template id="foundation-content">
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm max-w-4xl mx-auto">
+            <p class="text-xl font-semibold text-indigo-700 mb-3">Semi-Qualified CA</p>
+            <!-- Foundation description already uses text-justify -->
+            <p class="text-justify text-gray-700 mb-6 text-justify">
+                3 years of articleship experience, followed by engagement based freelancing work in accounting and auditing provides me a rigorous understanding of compliance, financial reporting and standards. This helps me design systems based on functional integration, audit-trail, reportability and vizualization.
+            </p>
+            
+            <p class="font-semibold text-gray-800 mb-2">Core Financial Skills:</p>
+            <div class="flex flex-wrap gap-3">
+                <span class="bg-indigo-100 text-indigo-800 text-sm font-medium px-3 py-1 rounded-full">Audit</span>
+		<span class="bg-indigo-100 text-indigo-800 text-sm font-medium px-3 py-1 rounded-full">Compliance</span>
+                <span class="bg-indigo-100 text-indigo-800 text-sm font-medium px-3 py-1 rounded-full">Financial Reporting</span>
+                <span class="bg-indigo-100 text-indigo-800 text-sm font-medium px-3 py-1 rounded-full">Risk Assessment</span>
+            </div>
+
+            <div class="mt-6 text-center">
+                <a href="https://drive.google.com/file/d/1593r_6QQcY_9dFy63VHzE_NSA9qgdWHx/view?usp=sharing" target="_blank" class="inline-block px-6 py-2 bg-indigo-700 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-800 transition duration-300">
+                    View Full Resume/CV
+                </a>
+            </div>
+        </div>
+    </template>
+
+    <!-- Data: Contact -->
+    <template id="contact-content">
+        <div class="text-center p-6 bg-white rounded-xl">
+            <h4 class="text-xl font-bold mb-4"></h4>
+            <p class="text-gray-600 mb-8">Ready to structure your next scalable project? Let's connect.</p>
+
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-8 mb-4">
+                <!-- Email -->
+                <div class="bg-gray-50 p-4 rounded-lg border">
+                    <p class="block text-gray-500 font-semibold mb-1">Email</p>
+                    <a href="mailto:mail@sanjeevkhanal.com.np" class="text-sm text-indigo-700 hover:text-indigo-900 transition duration-300">
+                        mail@sanjeevkhanal.com.np
+                    </a>
+                </div>
+                <!-- Whatsapp -->
+                <div class="bg-gray-50 p-4 rounded-lg border">
+                    <p class="block text-gray-500 font-semibold mb-1">Whatsapp</p>
+                    <a href="https://wa.me/9779864278144" target="_blank" class="text-sm text-indigo-700 hover:text-indigo-900 transition duration-300">
+                        +977-9864278144
+                    </a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+
+    <!-- ------------------------------------------- -->
+    <!-- 5. JavaScript Logic -->
+    <!-- ------------------------------------------- -->
+    <script>
+        // Global state to track which module is in detail view ('skills', 'projects', or null)
+        let activeMinimizeModule = null; 
+
+        // Mapping section keys to their titles and content templates
+        const sections = {
+            'skills': { title: 'Skills', template: 'skills-content' }, 
+            'projects': { title: 'Projects', template: 'projects-content' }, 
+            'foundation': { title: 'Qualification', template: 'foundation-content' },
+            'contact': { title: 'Get in Touch', template: 'contact-content' }
+        };
+
+        // Detailed skill content for the dynamic view
+        const skillDetails = {
+            accounting: {
+                title: "Accounting & Audit Traceability",
+                description: `
+                    <p class="text-justify">I apply professional financial and auditing rigor to software design. This ensures that every transaction and system event is designed with audit-level traceability, preventing fraud and guaranteeing compliance. My background provides deep insight into financial reporting standards, risk assessment, and the necessity of transactional accountability, exemplified in the 1pana project.</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mt-3">
+                        <li>Experience gained on articleship program.</li>
+                        <li>Expertise in NFRS/IFRS principles as applied to system logic.</li>
+                        <li>Focus on transparent and defensible data pipelines.</li>
+                    </ul>
+                `
+            },
+            design: {
+                title: "Systemic Product Architecture",
+                description: `
+                    <p class="text-justify">My approach goes beyond user interface (UI) to focus on systemic design. I model products and platforms from a holistic perspective, treating them as complex, interconnected systems. This methodology optimizes for long-term stability, resilience, and the minimization of unintended negative externalities across the ecosystem.</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mt-3">
+                        <li>Designing self-sufficient, multi-sided market platforms.</li>
+                        <li>Conceptualizing integrated logistics and supply chain ecosystems.</li>
+                        <li>Applying systems theory to organizational and product scaling challenges.</li>
+                    </ul>
+                `
+            },
+            modelling: {
+                title: "Complex System Modelling",
+                description: `
+                    <p class="text-justify">I specialize in conceptual and functional modeling of highly complex systems from abstract theoretical frameworks (like: The Awareness Framework) to scalable business ecosystems (like: khanal.co). This involves defining feedback loops, understanding emergent properties, and architecting platform mechanics that are inherently adaptive and self-regulating.</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mt-3">
+                        <li>Conceptual development of complex systems theories.</li>
+                        <li>Architecting platform mechanics and rulesets.</li>
+                        <li>Predicting failure points through component interaction analysis.</li>
+                    </ul>
+                `
+            },
+            strategy: {
+                title: "Platform Scalability & Resilience",
+                description: `
+                    <p class="text-justify">Strategic decision-making rooted in technical and financial reality. I focus on developing strategies that enable exponential, low-overhead growth. This means designing platforms that leverage network effects and decentralized mechanisms to reduce central resource strain and build organizational resilience against external shocks.</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mt-3">
+                        <li>Designing business models for self-sustaining growth.</li>
+                        <li>Structuring organizations for optimal information flow.</li>
+                        <li>Balancing centralization (control) and decentralization (scale).</li>
+                    </ul>
+                `
+            }
+        };
+
+        // Detailed project content for the dynamic view
+        const projectDetails = {
+            '1pana': {
+                title: "1pana Accounting Software",
+                subtitle: "Role Highlight: System Co-designer & Financial Architect",
+                description: `
+                    <p class="text-justify">Simplifying SME accounting by enabling vendors and businesses to upload invoices and taking care of rest of the financial recording, classifying, analysing and reporting process and providing simple and interactive dashboards to the users.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="font-semibold text-gray-800 mb-2">Key Features & Traceability:</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4">
+                            <li>Backend logic ties every journal entry directly to its original source document.</li>
+                            <li>Mobile/Web dashboard for bill/invoice upload and processing.</li>
+                            <li>Real-time financial visualization dashboard.</li>
+                        </ul>
+                    </div>
+                    <div class="mt-4">
+                        <a href="https://1pana.com" target="_blank" class="text-indigo-700 hover:underline font-medium">Visit 1pana →</a>
+                    </div>
+                `
+            },
+            'khanal-co': {
+                title: "Socio-Commerce Prototype",
+                subtitle: "Role Highlight: Platform Strategist & Ecosystem Designer.",
+                description: `
+                    <p class="text-justify">It is a community-driven platform that integrates social media, e-commerce and independent delivery-network. This conceptual system is designed to facilitate self-sustaining business model where each participant acts as both vendor and customer in a self-containing loop.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="font-semibold text-gray-800 mb-2">Strategic Decisions:</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4">
+                            <li>Scalable Delivery Model: Users can toggle into delivery mode for agile, low-overhead logistics.</li>
+                            <li>Integration of social feeds and e-commerce for organic product visibility.</li>
+                            <li>Demonstrates design of complex, multi-sided market ecosystems.</li>
+                        </ul>
+                    </div>
+                    <div class="mt-4">
+                        <a href="https://khanal.co" target="_blank" class="text-indigo-700 hover:underline font-medium">View Prototype →</a>
+                    </div>
+                `
+            },
+            'framework': {
+                title: "The Awareness Framework",
+                subtitle: "Role Highlight: System Theorist and Conceptual Author",
+                description: `
+                    <p class="text-justify">This is a published work exploring complex, self-organizing systems, connecting information theory, cybernetics, and phenomenological philosophy with the ethical values in self-regulating systems.</p>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="font-semibold text-gray-800 mb-2">Key Insight & Foundation:</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4">
+                            <li>Analyzes how observation dictates the structure of experience within any system.</li>
+                            <li>Provides the foundation for structuring adaptive and self-regulating business platforms.</li>
+                            <li>Demonstrates rigorous, long-term conceptual design and modeling capacity.</li>
+                        </ul>
+                    </div>
+                    <div class="mt-4">
+                        <a href="https://theawarenessframework.github.io/website" target="_blank" class="text-indigo-700 hover:underline font-medium">Read the Framework →</a>
+                    </div>
+                `
+            }
+        };
+
+
+        const welcomeOverlay = document.getElementById('welcome-overlay');
+        const contentModalOverlay = document.getElementById('content-modal-overlay');
+        const mainNav = document.getElementById('main-nav');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        const minimizeBtn = document.getElementById('minimize-btn'); 
+
+        /**
+         * Sets the active module for the minimize button and controls its visibility.
+         * @param {string|null} moduleKey - 'skills', 'projects', or null to hide.
+         */
+        function setActiveMinimizeModule(moduleKey) {
+            activeMinimizeModule = moduleKey;
+            if (moduleKey) {
+                minimizeBtn.classList.remove('hidden');
+            } else {
+                minimizeBtn.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Generic handler for the minimize button to call the correct toggle function.
+         */
+        function handleMinimize() {
+            if (activeMinimizeModule === 'skills') {
+                toggleSkillView(false);
+            } else if (activeMinimizeModule === 'projects') {
+                toggleProjectView(false);
+            }
+        }
+
+        /**
+         * Opens the modal with content corresponding to the selected section.
+         * @param {string} sectionKey - 'skills', 'projects', 'foundation', or 'contact'.
+         */
+        function openModal(sectionKey) {
+            const sectionData = sections[sectionKey];
+            if (!sectionData) return;
+
+            // 1. Hide Welcome Screen and Show Main Nav
+            welcomeOverlay.classList.remove('active');
+            mainNav.classList.remove('hidden');
+
+            // 2. Set Modal Title (Now in the header)
+            modalTitle.textContent = sectionData.title;
+
+            // 3. Populate Modal Content from Template
+            const template = document.getElementById(sectionData.template);
+            if (template) {
+                // Clear previous content
+                modalContent.innerHTML = ''; 
+                // Clone and append new content
+                modalContent.appendChild(template.content.cloneNode(true));
+            }
+            
+            // 4. Initialize section-specific views to ensure card view is shown initially
+            if (sectionKey === 'projects') {
+                toggleProjectView(false);
+            } else if (sectionKey === 'skills') {
+                toggleSkillView(false);
+            } else {
+                // For Foundation/Contact, ensure minimize button is hidden
+                setActiveMinimizeModule(null); 
+            }
+
+            // 5. Show the Modal Overlay
+            contentModalOverlay.classList.add('active');
+        }
+
+        /**
+         * Closes the main content modal AND resets the view to the welcome overlay.
+         */
+        function closeModal() {
+            contentModalOverlay.classList.remove('active');
+            welcomeOverlay.classList.add('active'); // Show the welcome selector screen again
+            mainNav.classList.add('hidden');       // Hide the navigation bar
+            setActiveMinimizeModule(null); // Reset state
+        }
+
+        /**
+         * Toggles the view inside the Skills modal between the card selector and the detail view.
+         * @param {boolean} showDetail - True to show the detail view, false to show the card view.
+         * @param {string} [categoryKey] - The key for the skill details ('accounting', 'design', etc.).
+         */
+        function toggleSkillView(showDetail, categoryKey = null) {
+            const cardView = document.getElementById('skill-card-view');
+            const detailView = document.getElementById('skill-detail-view');
+            const detailTitle = document.getElementById('skill-detail-title');
+            const detailDescription = document.getElementById('skill-detail-description');
+            
+            if (!cardView || !detailView) return;
+
+            if (showDetail && categoryKey) {
+                const details = skillDetails[categoryKey];
+                if (!details) return;
+
+                // 1. Populate details
+                detailTitle.textContent = details.title;
+                detailDescription.innerHTML = details.description;
+                
+                // 2. Hide Card View (fade out)
+                cardView.classList.add('opacity-0');
+                
+                // 3. After fade out, show detail view
+                setTimeout(() => {
+                    cardView.classList.add('hidden');
+                    detailView.classList.remove('hidden');
+                    setTimeout(() => detailView.classList.remove('opacity-0'), 10); 
+                }, 500); 
+
+                setActiveMinimizeModule('skills');
+
+            } else { // Show Card View (from Minimize button or initial load)
+                // 1. Hide Detail View (fade out)
+                detailView.classList.add('opacity-0');
+                
+                // 2. After fade out, show card view
+                setTimeout(() => {
+                    detailView.classList.add('hidden');
+                    cardView.classList.remove('hidden');
+                    setTimeout(() => cardView.classList.remove('opacity-0'), 10);
+                }, 500); 
+
+                setActiveMinimizeModule(null);
+            }
+        }
+        
+        /**
+         * Toggles the view inside the Projects modal between the card selector and the detail view.
+         * @param {boolean} showDetail - True to show the detail view, false to show the card view.
+         * @param {string} [projectKey] - The key for the project details ('1pana', 'khanal-co', etc.).
+         */
+        function toggleProjectView(showDetail, projectKey = null) {
+            const cardView = document.getElementById('project-card-view');
+            const detailView = document.getElementById('project-detail-view');
+            const detailTitle = document.getElementById('project-detail-title');
+            const detailSubtitle = document.getElementById('project-detail-subtitle');
+            const detailDescription = document.getElementById('project-detail-description');
+            
+            if (!cardView || !detailView) return;
+
+            if (showDetail && projectKey) {
+                const details = projectDetails[projectKey];
+                if (!details) return;
+
+                // 1. Populate details
+                detailTitle.textContent = details.title;
+                detailSubtitle.textContent = details.subtitle;
+                detailDescription.innerHTML = details.description;
+                
+                // 2. Hide Card View (fade out)
+                cardView.classList.add('opacity-0');
+                
+                // 3. After fade out, show detail view
+                setTimeout(() => {
+                    cardView.classList.add('hidden');
+                    detailView.classList.remove('hidden');
+                    setTimeout(() => detailView.classList.remove('opacity-0'), 10); 
+                }, 500); 
+
+                setActiveMinimizeModule('projects');
+
+            } else { // Show Card View (from Minimize button or initial load)
+                // 1. Hide Detail View (fade out)
+                detailView.classList.add('opacity-0');
+                
+                // 2. After fade out, show card view
+                setTimeout(() => {
+                    detailView.classList.add('hidden');
+                    cardView.classList.remove('hidden');
+                    setTimeout(() => cardView.classList.remove('opacity-0'), 10);
+                }, 500); 
+
+                setActiveMinimizeModule(null);
+            }
+        }
+
+
+        // Initialize: Ensure the welcome overlay is active on page load
+        document.addEventListener('DOMContentLoaded', () => {
+             if (!contentModalOverlay.classList.contains('active')) {
+                 welcomeOverlay.classList.add('active');
+             }
         });
     </script>
+
 </body>
 </html>
-
-
