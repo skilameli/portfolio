@@ -1,8 +1,11 @@
-Allow all bots to crawl the entire site
+# robots.txt for https://sanjeevkhanal.com.np/
+# Last updated: 2025-11-13
 
 User-agent: *
-Disallow:
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /junk/
+Allow: /
 
-Specify the location of the sitemap
-
-Sitemap: https://www.google.com/search?q=https://sanjeevkhanal.com.np/sitemap.xml
+# Sitemap location
+Sitemap: https://sanjeevkhanal.com.np/sitemap.xml
