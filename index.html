@@ -4,151 +4,265 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sanjeev Khanal</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <!-- Load Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Custom font import and general styling */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        /* Custom styles for professional, clean look */
+        :root {
+            --primary-color: #1f2937; /* Dark Gray/Slate */
+            --accent-color: #3b82f6; /* Blue */
+            --text-color: #374151; /* Medium Gray */
+            --bg-color: #f9fafb; /* Light Gray */
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #ffffff; /* Pure white background */
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
-        .icon-size {
-            width: 24px;
-            height: 24px;
+        .section-header {
+            border-bottom: 2px solid var(--accent-color);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-weight: 700;
         }
-        /* Custom border utility for subtle division */
-        .divider-border {
-            border-bottom: 1px solid #e5e7eb; /* Gray-200 */
+        .project-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border-left: 4px solid var(--accent-color);
+        }
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
-<body class="text-gray-900 bg-white">
+<body class="antialiased">
 
-    <!-- Header & Hero Section (Minimalist, High-Contrast) -->
-    <header class="bg-white divider-border shadow-sm">
-        <div class="max-w-4xl mx-auto px-6 py-10 text-center">
-            <h1 class="text-4xl sm:text-5xl font-extrabold mb-1 tracking-tight">Sanjeev Khanal</h1>
-            <p class="text-lg sm:text-xl font-medium text-gray-700 mt-2">
-                Semi-Qualified CA | System Thinking | Digital Approach
+    <div class="max-w-7xl mx-auto p-4 sm:p-8 lg:p-12">
+        <!-- I. Hero Section - UPDATED with border and shadow-xl -->
+        <header id="hero" class="text-center py-16 sm:py-24 mb-12 bg-white rounded-xl shadow-xl border border-gray-200">
+            
+            <!-- Rounded Profile Picture -->
+            <img 
+                src="sanjeev.jpg" 
+                alt="Sanjeev Khanal Profile Picture" 
+                class="w-32 h-32 rounded-full mx-auto mb-6 object-cover border-4 border-white shadow-md"
+                onerror="this.onerror=null; this.src='https://placehold.co/128x128/3b82f6/ffffff?text=SK';"
+            >
+
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900 mb-4">
+                Sanjeev Khanal
+            </h1>
+            <h2 class="text-xl sm:text-2xl font-medium text-gray-700 max-w-3xl mx-auto mb-6">
+                Focus on Structure, Scale, and Traceability
+            </h2>
+            <p class="text-lg sm:text-xl text-gray-500 max-w-4xl mx-auto mb-8">
+                Using a foundation in <strong>financial and auditing rigor</strong> to design resilient, transparent, and self-sufficient business platforms.
             </p>
-            <div class="mt-6 flex justify-center space-x-6">
-                <span class="inline-flex items-center text-gray-700 text-sm font-semibold tracking-wider">
-                    <i data-lucide="calculator" class="w-4 h-4 mr-2 text-gray-500"></i> ACCOUNTING & AUDIT
-                </span>
-                <span class="inline-flex items-center text-gray-700 text-sm font-semibold tracking-wider">
-                    <i data-lucide="layout-grid" class="w-4 h-4 mr-2 text-gray-500"></i> SYSTEM DESIGN
-                </span>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-4xl mx-auto px-6 py-16 sm:py-24">
-
-        <!-- Professional Summary (Elevator Pitch) -->
-        <section class="mb-20">
-            <div class="p-0 rounded-none border-b border-gray-200 pb-8">
-                <p class="text-xl leading-relaxed text-gray-800 font-light text-justify">
-                    With 3+ years of comprehensive experience in Accounting and Auditing, I bring diligence to the services delivered. I believe that modern businesses require modern solutions and a strong long-term sustainable vision. By strategically leveraging AI, automation, and digital infrastructure in finance and other business applications, I help clients move forward from convention. I bridge the gap between financial accuracy and modern technology, enabling me to not only secure your books but also enhance your professional presence through rapid, custom web development. I am eager to collaborate with creative individuals and organizations committed to building a smarter, more efficient systems and together with it, a better future.
-                </p>
-            </div>
-        </section>
-
-        <!-- Core Competency: Finance & Audit -->
-        <section id="finance-core" class="mb-20">
-            <h2 class="text-3xl font-extrabold mb-10 text-center text-gray-900 uppercase tracking-widest">Expertise</h2>
-            <div class="grid md:grid-cols-2 gap-10">
-                <!-- Finance Card -->
-                <div class="border border-gray-200 p-8 rounded-lg">
-                    <i data-lucide="banknote" class="icon-size text-gray-700 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-3">Financial Strategy & Assurance</h3>
-                    <p class="text-gray-600 mb-5 text-justify">
-                        Semi-Qualified Chartered Accountant (Nepal) dedicated to rigorous financial compliance and insight generation.
-                    </p>
-                    <ul class="list-none space-y-3 text-sm text-gray-700">
-                        <li class="flex items-center"><i data-lucide="chevrons-right" class="w-4 h-4 text-gray-500 mr-2"></i> Internal & External Auditing</li>
-                        <li class="flex items-center"><i data-lucide="chevrons-right" class="w-4 h-4 text-gray-500 mr-2"></i> Financial Reporting (IFRS/NFRS)</li>
-                        <li class="flex items-center"><i data-lucide="chevrons-right" class="w-4 h-4 text-gray-500 mr-2"></i> Compliance, Taxation, and Assurance</li>
-                        <li class="flex items-center"><i data-lucide="chevrons-right" class="w-4 h-4 text-gray-500 mr-2"></i> Advanced Data Analysis in Excel</li>
-                    </ul>
-                </div>
-
-                <!-- Digital/Tech Card -->
-                <div class="border border-gray-200 p-8 rounded-lg">
-                    <i data-lucide="layout" class="icon-size text-gray-700 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-3">Digital Execution & Innovation</h3>
-                    <p class="text-gray-600 mb-5 text-justify">
-                        Leveraging modern technology to deliver custom digital solutions for professional brands.
-                    </p>
-                    <ul class="list-none space-y-3 text-sm text-gray-700">
-                        <li class="flex items-center"><i data-lucide="chevrons-right" class="w-4 h-4 text-gray-500 mr-2"></i> AI-Powered Web Design & Publishing</li>
-                        <li class="flex items-center"><i data-lucide="chevrons-right" class="w-4 h-4 text-gray-500 mr-2"></i> Custom Domain & Professional Email Setup</li>
-                        <li class="flex items-center"><i data-lucide="chevrons-right" class="w-4 h-4 text-gray-500 mr-2"></i> Software Prototyping (Conceptualization)</li>
-                        <li class="flex items-center"><i data-lucide="chevrons-right" class="w-4 h-4 text-gray-500 mr-2"></i> UX/UI Awareness & Project Scoping</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured Projects & Authority -->
-        <section id="projects-authority" class="mb-20">
-            <h2 class="text-3xl font-extrabold mb-10 text-center text-gray-900 uppercase tracking-widest">Showcase</h2>
-            <div class="grid md:grid-cols-2 gap-10">
-
-                <!-- Project 1: Khanal.co Prototype (Now equal width, uses col-span-1) -->
-                <div class="bg-gray-50 p-6 rounded-lg col-span-1 border border-gray-200">
-                    <i data-lucide="rocket" class="icon-size text-gray-700 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">App Prototype</h3>
-                    <p class="text-sm text-gray-500 mb-4">Conceptual Social-Commerce App</p>
-                    <p class="text-gray-700 leading-relaxed text-justify">
-                        This working prototype demonstrates my wide-view perspective and ability to conceptualize, scope, and execute projects that challenge existing industry boundaries. It serves as concrete proof of adaptability and technological curiosity beyond traditional financial roles.
-                    </p>
-                    <a href="https://khanal.co" target="_blank" class="mt-4 inline-block text-gray-700 text-xs font-semibold uppercase tracking-wider bg-white border border-gray-300 rounded-full px-3 py-1 hover:bg-gray-100 transition duration-300">
-                        View Live Demo
-                    </a>
-                </div>
-
-                <!-- Project 2: Written Authority (The Book) (Now equal width, uses col-span-1) -->
-                <div class="bg-gray-50 p-6 rounded-lg col-span-1 border border-gray-200">
-                    <i data-lucide="book-open" class="icon-size text-gray-700 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">The Awareness Framework</h3>
-                    <p class="text-sm text-gray-500 mb-4">Co-Author, Published Book</p>
-                    <p class="text-gray-700 mt-2 flex-grow leading-relaxed text-justify">
-                        Our published work focuses on sustainability and system thinking, demonstrating my ability to analyze complex interconnected problems. This skill set is crucial for developing robust, long-term strategies, clear professional communication, and structuring comprehensive client reports.
-                    </p>
-                    <a href="https://theawarenessframework.github.io/website/" target="_blank" class="mt-4 inline-block text-gray-700 text-xs font-semibold uppercase tracking-wider bg-white border border-gray-300 rounded-full px-3 py-1 hover:bg-gray-100 transition duration-300">
-                        View Book Website
-                    </a>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer / Call to Action (Monochrome) -->
-    <footer class="bg-gray-100 text-black">
-        <div class="max-w-4xl mx-auto px-6 py-12 text-center">
-            <h3 class="text-3xl font-extrabold mb-4 tracking-tight">Let's Connect.</h3>
-            <p class="mb-8 text-gray-600">
-                Ready to discuss your financial or digital project?
-            </p>
-            <div class="flex justify-center">
-                <!-- WhatsApp CTA Link -->
-                <a href="https://wa.me/9779864278144?text=Hello%20Sanjeev%2C%20I%20am%20interested%20in%20discussing%20a%20project%20after%20seeing%20your%20portfolio." 
-                   target="_blank" 
-                   class="bg-black text-white hover:bg-[#25D366] font-bold py-4 px-10 rounded-lg transition duration-300 shadow-xl text-lg flex items-center border border-white">
-                    <i data-lucide="message-square" class="w-5 h-5 mr-3"></i> Hire Sanjeev via WhatsApp
+            <!-- CTAs -->
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#projects" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition duration-150 ease-in-out">
+                    <i data-lucide="layout-grid" class="w-5 h-5 mr-2"></i>
+                    Explore My Work & Projects
+                </a>
+                <a href="https://wa.me/9779864278144" target="_blank" class="inline-flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-lg shadow-sm text-gray-700 bg-white hover:bg-gray-50 transition duration-150 ease-in-out">
+                    <i data-lucide="message-square" class="w-5 h-5 mr-2"></i>
+                    Connect on Whatsapp
                 </a>
             </div>
-            <p class="mt-10 text-xs text-gray-500">&copy; 2025 Sanjeev Khanal. All Rights Reserved.</p>
-        </div>
-    </footer>
+        </header>
 
+        <!-- II. Skills and Experience -->
+        <section id="skills" class="py-12 bg-white rounded-xl shadow-lg mb-12 p-8 sm:p-12">
+            <h2 class="section-header text-3xl">Skills and Experience</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                <!-- Skill 1: Updated with border and shadow-md -->
+                <div class="flex flex-col p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-md">
+                    <i data-lucide="layers" class="w-8 h-8 text-blue-600 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Platform Strategy & Scalability</h3>
+                    <p class="text-gray-600 text-justify">Architecting self-sufficient, multi-sided platforms and integrated logistics ecosystems capable of large-scale growth (demonstrated in <a href="https://khanal.co">khanal.co</a>).</p>
+                </div>
+                <!-- Skill 2: Updated with border and shadow-md -->
+                <div class="flex flex-col p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-md">
+                    <i data-lucide="shield-check" class="w-8 h-8 text-blue-600 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Audit-Level Traceability</h3>
+                    <p class="text-gray-600 text-justify">Integrating strict financial and auditing rigor into software design to ensure transactional accountability and transparency in Fintech/SaaS. (demonstrated in <a href="https://1pana.com">1pana</a>).</p>
+                </div>
+                <!-- Skill 3: Updated with border and shadow-md -->
+                <div class="flex flex-col p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-md">
+                    <i data-lucide="cog" class="w-8 h-8 text-blue-600 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Organizational Structuring</h3>
+                    <p class="text-gray-600 text-justify">Applying systems theory and advanced financial methodologies to solve complex business structure problems and optimize organizational resilience (demonstrated in <a href="https://theawarenessframework.github.io/website">book</a>).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- III. Key Strategic Projects -->
+        <section id="projects" class="py-12">
+            <h2 class="section-header text-3xl">Key Strategic Projects</h2>
+
+            <div class="space-y-10">
+
+                <!-- Project A: 1pana - Updated with border and shadow-xl -->
+                <div class="project-card bg-white p-8 rounded-xl shadow-xl border border-gray-200">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900 flex items-center">
+                            <i data-lucide="wallet" class="w-6 h-6 mr-3 text-blue-600"></i>
+                            Project A: 1pana <span class="text-base font-normal ml-3 text-gray-500">(Fintech & Accounting System Design)</span>
+                        </h3>
+                    </div>
+                    
+                    <p class="text-sm font-medium text-blue-600 mb-3">Role Highlight: System Co-designer & Financial Architect.</p>
+                    
+                    <p class="mb-4 text-gray-600">
+                        <strong>Problem Solved:</strong> Simplifying SME accounting while ensuring professional-level traceability and transparency.
+                    </p>
+                    
+                    <h4 class="font-semibold text-gray-700 mb-2">Key Features:</h4>
+                    <ul class="list-disc list-inside space-y-1 pl-4 text-gray-600">
+                        <li>Mobile/Web dashboard for bill/invoice upload.</li>
+                        <li>Backend logic tying every journal entry directly to its original source document.</li>
+                        <li>Real-time financial visualization dashboard.</li>
+                    </ul>
+
+                    <p class="mt-4 text-sm italic text-gray-500">
+                        <strong>Strategic Takeaway:</strong> This showcases my ability to translate complex financial requirements into clean, user-friendly, and technically sound product features.
+                    </p>
+
+                    <a href="https://1pana.com" target="_blank" class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 transition">
+                        <i data-lucide="external-link" class="w-4 h-4 mr-2"></i>
+                        Visit 1pana
+                    </a>
+                </div>
+
+                <!-- Project B: khanal.co Prototype - Updated with border and shadow-xl -->
+                <div class="project-card bg-white p-8 rounded-xl shadow-xl border border-gray-200">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900 flex items-center">
+                            <i data-lucide="shopping-cart" class="w-6 h-6 mr-3 text-blue-600"></i>
+                            Project B: App Prototype <span class="text-base font-normal ml-3 text-gray-500">(E-commerce & Logistics Platform Strategy)</span>
+                        </h3>
+                    </div>
+                    
+                    <p class="text-sm font-medium text-blue-600 mb-3">Role Highlight: Platform Strategist & Ecosystem Designer.</p>
+                    
+                    <p class="mb-4 text-gray-600">
+                        <strong>Concept Summary:</strong> A self-sustaining, community-driven platform integrating social commerce with a built-in, independent delivery network.
+                    </p>
+                    
+                    <h4 class="font-semibold text-gray-700 mb-2">Key Strategic Decisions:</h4>
+                    <ul class="list-disc list-inside space-y-1 pl-4 text-gray-600">
+                        <li>Integration of social feeds and e-commerce for organic product visibility.</li>
+                        <li>Scalable Delivery Model: Enabling independent users to toggle into "Delivery Partner" mode to create an agile, low-overhead logistics layer.</li>
+                        <li>Internal chat system for direct buyer/seller communication.</li>
+                    </ul>
+
+                    <p class="mt-4 text-sm italic text-gray-500">
+                        <strong>Strategic Takeaway:</strong> This demonstrates forward-thinking product strategy, an understanding of logistics, and the design of complex, multi-sided market ecosystems.
+                    </p>
+
+                    <a href="https://khanal.co" target="_blank" class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 transition">
+                        <i data-lucide="external-link" class="w-4 h-4 mr-2"></i>
+                        View Prototype
+                    </a>
+                </div>
+
+                <!-- Project C: The Awareness Framework - Updated with border and shadow-xl -->
+                <div class="project-card bg-white p-8 rounded-xl shadow-xl border border-gray-200">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900 flex items-center">
+                            <i data-lucide="book-open" class="w-6 h-6 mr-3 text-blue-600"></i>
+                            Project C: The Awareness Framework <span class="text-base font-normal ml-3 text-gray-500">(Analytical Depth & Systems Theory)</span>
+                        </h3>
+                    </div>
+                    
+                    <p class="text-sm font-medium text-blue-600 mb-3">Role Highlight: Systemic Theorist & Conceptual Author.</p>
+                    
+                    <p class="mb-4 text-gray-600">
+                        <strong>Focus:</strong> A published work exploring complex and self-organizing systems, drawing connections between Information Theory, Cybernetics, and Phenomenological Philosophy. The work focused on expansion and containment.
+                    </p>
+                    
+                    <h4 class="font-semibold text-gray-700 mb-2">Key Insight:</h4>
+                    <p class="text-gray-600">
+                        The book develops a <strong>Framework of Awareness</strong> that analyzes how observation and perspective dictate the structure and unfolding of experience within any system.
+                    </p>
+
+                    <p class="mt-4 text-sm italic text-gray-500">
+                        <strong>Strategic Takeaway:</strong> This demonstrates exceptional capacity for rigorous, long-term conceptual design and modeling of complex, multi-variable environments. It provides the intellectual foundation for structuring scalable business platforms that are inherently adaptive and self-regulating.
+                    </p>
+
+                    <a href="https://theawarenessframework.github.io/website" target="_blank" class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 transition">
+                        <i data-lucide="external-link" class="w-4 h-4 mr-2"></i>
+                        Read the Framework
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- IV. Professional Foundation - UPDATED with border and shadow-xl -->
+        <section id="foundation" class="py-12 bg-white rounded-xl shadow-xl border border-gray-200 mb-12 p-8 sm:p-12">
+            <h2 class="section-header text-3xl">Professional Foundation</h2>
+            
+            <p class="text-xl font-semibold text-gray-900 mt-6 mb-2">Semi-Qualified CA / Financial Systems Analyst</p>
+
+            <p class="text-gray-600 mb-6">
+                My professional journey began with three years of intensive articleship, establishing a strong foundation in core financial, compliance, and auditing procedures. Post-articleship, I've maintained proficiency through engagement-based freelancing in accounting and auditing, which provides a real-world, operational perspective that informs my strategic design work today. I now seek opportunities focused on high-level systemic structuring and platform strategy.
+            </p>
+
+            <h4 class="font-semibold text-gray-700 mb-3">Core Skills:</h4>
+            <div class="flex flex-wrap gap-3">
+                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">Audit & Compliance</span>
+                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">Financial Reporting</span>
+                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">Risk Assessment</span>
+                <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">Systemic Due Diligence</span>
+            </div>
+
+            <a href="https://drive.google.com/file/d/1593r_6QQcY_9dFy63VHzE_NSA9qgdWHx/view?usp=sharing" target="_blank" class="mt-8 inline-flex items-center px-6 py-2 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-gray-600 hover:bg-gray-700 transition">
+                <i data-lucide="file-text" class="w-5 h-5 mr-2"></i>
+                View Full Resume/CV
+            </a>
+        </section>
+
+        <!-- V. Contact / Footer -->
+        <footer id="contact" class="text-center py-12 bg-gray-900 rounded-xl shadow-lg text-white">
+            <h2 class="text-3xl font-bold mb-4">Let's Connect</h2>
+            <p class="text-lg text-gray-300 mb-8 max-w-xl mx-auto">
+                Ready to structure your next scalable project? I'm available for strategic consultations and system design roles.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-8">
+                <a href="mailto:mail@sanjeevkhanal.com.np" class="text-gray-300 hover:text-blue-400 transition flex items-center justify-center">
+                    <i data-lucide="mail" class="w-6 h-6 mr-2"></i>
+                    mail@sanjeevkhanal.com.np
+                </a>
+                <a href="https://wa.me/9779864278144" target="_blank" class="text-gray-300 hover:text-blue-400 transition flex items-center justify-center">
+                    <i data-lucide="message-square" class="w-6 h-6 mr-2"></i>
+                    +977-9864278144 (Whatsapp)
+                </a>
+            </div>
+            
+            <p class="mt-10 text-sm text-gray-500">
+                &copy; 2024 Sanjeev Khanal. All Rights Reserved.
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- Initialize Lucide Icons -->
     <script>
-        // Initialize Lucide Icons
         lucide.createIcons();
+
+        // Smooth scrolling for the primary CTA
+        document.querySelector('a[href="#projects"]').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+        });
     </script>
 </body>
 </html>
