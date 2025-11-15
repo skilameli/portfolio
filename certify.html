@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Nepal | vendornepal.com</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+        }
+
+        /* Platform Primary Color */
+        .vn-primary { background-color: #4f46e5; } /* Indigo 600 */
+        .vn-text-primary { color: #4f46e5; }
+        .vn-border-primary { border-color: #4f46e5; }
+
+        /* Color Coding for List Rows */
+        .row-verified { border-left: 4px solid #10B981; } /* Green */
+        .row-pending { border-left: 4px solid #F59E0B; } /* Orange */
+        .row-rejected { border-left: 4px solid #EF4444; } /* Red */
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+
+        /* Navigation Tab Styling */
+        .nav-link {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 0.5rem 0.5rem 0 0;
+            transition: all 0.2s;
+            border-bottom: 3px solid transparent;
+        }
+        .nav-link:hover:not(.active) {
+            background-color: #f3f4f6;
+        }
+        .nav-link.active {
+            background-color: white;
+            color: #4f46e5;
+            border-bottom: 3px solid #4f46e5;
+        }
+        
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Header (Vendor Nepal Branding) -->
+        <header class="py-6 sm:py-8 bg-white rounded-xl shadow-lg mb-4 flex items-center justify-between px-6">
+            <div>
+                <h1 class="text-3xl sm:text-4xl font-extrabold vn-text-primary">Vendor Nepal</h1>
+                <p class="mt-1 text-sm text-gray-500">Procurement Integrity | vendornepal.com</p>
+            </div>
+            <div class="hidden sm:block">
+                <span class="text-sm font-medium text-gray-600 px-3 py-1 rounded-full bg-indigo-50">Authenticated User View</span>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="flex border-b border-gray-200">
+            <button class="nav-link active" data-view="certification" onclick="showView('certification')">
+                1. Vendor Certification
+            </button>
+            <button class="nav-link" data-view="pricing" onclick="showView('pricing')">
+                2. Price Listing Hub
+            </button>
+            <button class="nav-link" data-view="bidding" onclick="showView('bidding')">
+                3. Online Bidding & RFQ
+            </button>
+        </div>
+
+        <!-- === 1. VENDOR CERTIFICATION HUB VIEW (Default) === -->
+        <section id="certification-view" class="mt-0 bg-white shadow-xl rounded-b-xl overflow-hidden p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Certified Vendor List</h2>
+            <p class="text-gray-600 mb-6">List of all providers, filtered by their compliance verification status.</p>
+            
+            <div class="bg-gray-50 border rounded-lg overflow-hidden">
+                <!-- Table Header (Visible on Desktop) -->
+                <div class="hidden md:grid grid-cols-12 gap-4 py-3 px-6 border-b border-gray-200 font-semibold text-gray-600">
+                    <div class="col-span-1">Status</div>
+                    <div class="col-span-4">Vendor Name & Industry</div>
+                    <div class="col-span-4">Description/Contact</div>
+                    <div class="col-span-3 text-right">Actions</div>
+                </div>
+
+                <!-- Vendor List Body -->
+                <div id="vendor-list">
+                    <!-- Vendor rows will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- === 2. PRICE LISTING HUB VIEW === -->
+        <section id="pricing-view" class="mt-0 bg-white shadow-xl rounded-b-xl overflow-hidden p-6 hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Aggregated Price Listing</h2>
+            <p class="text-gray-600 mb-6">View key products/services and their average market pricing from certified vendors.</p>
+            
+            <div class="overflow-x-auto border rounded-lg shadow-inner">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product/Service</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No. of Vendors</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Average Price (NPR)</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg. Volume Discount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-100" id="aggregated-price-list">
+                        <!-- Aggregated product rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-xs text-gray-500 mt-4">Note: Average price and discount are calculated based on publicly available catalog data from verified vendors.</p>
+        </section>
+
+
+        <!-- === 3. ONLINE BIDDING & RFQ VIEW === -->
+        <section id="bidding-view" class="mt-0 bg-white shadow-xl rounded-b-xl overflow-hidden p-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Online Bidding & RFQ Management</h2>
+            <p class="text-gray-600 mb-8">This module manages your Requests for Quotes (RFQ) and tracks the vendor response status.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Bid Status Card 1: Active RFQs -->
+                <div class="p-6 bg-indigo-50 border border-indigo-200 rounded-xl shadow-md">
+                    <div class="text-3xl font-bold vn-text-primary" id="active-rfq-count">3</div>
+                    <p class="text-lg text-gray-700 font-semibold mt-1">Active RFQs</p>
+                    <p class="text-sm text-gray-500">Awaiting vendor responses.</p>
+                </div>
+                <!-- Bid Status Card 2: Bids Under Review (Placeholder) -->
+                <div class="p-6 bg-yellow-50 border border-yellow-200 rounded-xl shadow-md">
+                    <div class="text-3xl font-bold text-yellow-600">1</div>
+                    <p class="text-lg text-gray-700 font-semibold mt-1">Quotes Received</p>
+                    <p class="text-sm text-gray-500">Ready for comparison.</p>
+                </div>
+                <!-- Bid Status Card 3: Contracts Awarded (Placeholder) -->
+                <div class="p-6 bg-green-50 border border-green-200 rounded-xl shadow-md">
+                    <div class="text-3xl font-bold text-green-600">12</div>
+                    <p class="text-lg text-gray-700 font-semibold mt-1">Contracts Awarded</p>
+                    <p class="text-sm text-gray-500">Successful procurement history.</p>
+                </div>
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-gray-200">
+                <button onclick="showRFQModal()" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition shadow-lg">
+                    <svg class="w-5 h-5 inline mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    Create New RFQ
+                </button>
+            </div>
+            
+            <!-- RFQ Tracking List -->
+            <div class="mt-8">
+                <h3 class="text-xl font-bold text-gray-700 mb-3">Recently Submitted RFQs</h3>
+                <div class="space-y-3" id="rfq-tracking-list">
+                    <!-- Default/Submitted RFQs will be displayed here -->
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- Modal for Detailed Vendor View (Unchanged) -->
+    <div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-2xl max-w-5xl w-full p-6 sm:p-8 my-8">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900" id="modal-detail-title"></h2>
+                    <p class="text-indigo-600 font-medium" id="modal-detail-industry"></p>
+                </div>
+                <button onclick="document.getElementById('detail-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <p class="text-gray-700 mb-6" id="modal-detail-description"></p>
+
+            <h3 class="text-xl font-bold text-gray-700 mb-4">Full Procurement Integrity Report</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-sm bg-gray-50 p-4 rounded-lg" id="modal-detail-data">
+                <!-- Detail items inserted here -->
+            </div>
+            
+            <h3 class="text-xl font-bold text-gray-700 mb-3 mt-6">Core Services</h3>
+            <div class="flex flex-wrap gap-2" id="modal-detail-services">
+                <!-- Core services tags inserted here -->
+            </div>
+
+            <div class="mt-6 text-right border-t pt-4">
+                <button onclick="document.getElementById('detail-modal').classList.add('hidden')" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold">Close Detail View</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for Product Listing (Catalogue) (Unchanged) -->
+    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-2xl max-w-4xl w-full p-6 sm:p-8 my-8">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h2 class="text-2xl font-bold text-gray-900">Product Catalog & Volume Pricing</h2>
+                <button onclick="document.getElementById('product-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <p class="text-gray-600 mb-6" id="modal-vendor-name"></p>
+            
+            <div class="overflow-x-auto border rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product/Service</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Base Price (Per Unit)</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Discount (100+ Units)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="modal-product-list">
+                        <!-- Product rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-6 text-right">
+                <button onclick="document.getElementById('product-modal').classList.add('hidden')" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold">Close Catalog</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- MODAL FOR RFQ CREATION (Unchanged) -->
+    <div id="rfq-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full p-6 sm:p-8 my-8">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h2 class="text-2xl font-bold text-gray-900">Create New Request for Quote (RFQ)</h2>
+                <button onclick="document.getElementById('rfq-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <form id="rfq-form">
+                <p class="text-gray-600 mb-6">Select the required products/services and specify the quantity for each. The RFQ will be sent to all relevant certified vendors.</p>
+
+                <div class="mb-4">
+                    <label for="rfq-title" class="block text-sm font-medium text-gray-700 mb-1">RFQ Title (e.g., Q3 Office Supply Tender)</label>
+                    <input type="text" id="rfq-title" required class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-2 border">
+                </div>
+                
+                <h3 class="text-lg font-bold text-gray-700 mt-6 mb-3">Item Selection & Quantity</h3>
+                <div class="border rounded-lg overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/2">Product / Service</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">Source Vendor(s)</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">Required Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-100" id="rfq-item-list">
+                            <!-- RFQ items will be dynamically inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" onclick="document.getElementById('rfq-modal').classList.add('hidden')" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold">Cancel</button>
+                    <button type="submit" class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition shadow-md">Submit RFQ to Vendors</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL FOR RFQ BID REVIEW (NEW) -->
+    <div id="bid-review-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4 z-50 overflow-y-auto">
+        <div class="bg-white rounded-xl shadow-2xl max-w-5xl w-full p-6 sm:p-8 my-8">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h2 class="text-2xl font-bold text-gray-900" id="bid-review-title">Review Bids: RFQ Title</h2>
+                <button onclick="document.getElementById('bid-review-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="mb-4">
+                <p class="text-sm font-medium text-gray-700 mb-2">Items Quoted:</p>
+                <div class="flex flex-wrap gap-2 text-sm" id="quoted-items-summary">
+                    <!-- Item summary tags here -->
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-700 mt-6 mb-3">Bid Comparison (Minimum Price at Top)</h3>
+
+            <div class="overflow-x-auto border rounded-lg shadow-inner">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor Name</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Total Bid Amount (NPR)</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submission Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-100" id="bid-comparison-list">
+                        <!-- Bid rows inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 text-right">
+                <button onclick="document.getElementById('bid-review-modal').classList.add('hidden')" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold">Close Comparison</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- UTILITY FUNCTIONS ---
+        // Converts price string (e.g., "Rs. 75,000") to number (75000)
+        function parsePrice(priceString) {
+            if (!priceString || typeof priceString !== 'string') return 0;
+            const match = priceString.match(/Rs\. ([\d,]+)/);
+            if (match) {
+                return parseInt(match[1].replace(/,/g, ''), 10);
+            }
+            return 0;
+        }
+
+        // Extracts discount percentage (e.g., "10% off" -> 10)
+        function parseDiscount(discountString) {
+            if (!discountString || typeof discountString !== 'string') return 0;
+            const matchPercent = discountString.match(/(\d+)%/);
+            if (matchPercent) {
+                return parseInt(matchPercent[1], 10);
+            }
+            // For Rs. discount, we'll return 0 for simplicity in average calculation
+            return 0;
+        }
+
+        // --- DEMO VENDOR DATA ---
+        const vendorData = [
+            {
+                id: 'vendor-1',
+                name: "Alpha-Tech Solutions Pvt. Ltd.",
+                verification_status: 'verified', 
+                industry: "IT Security & Auditing",
+                description: "Certified security consultancy specializing in financial platform vulnerability testing and NRB compliance.",
+                business_type: "Private Limited Company",
+                paid_up_capital: "5 Crore NPR",
+                vendor_type: "Service Provider",
+                tax_clearance_status: "Up to 2081/82",
+                pan_no: "303456789",
+                contact_person: "Mrs. Shreya Gautam",
+                contact_role: "Head of Operations",
+                contact_email: "shreya.gautam@alphatech.com.np",
+                contact_phone: "98510XXXXX",
+                employees: 55,
+                location: "Mid-Baneshwor, Kathmandu",
+                service_area: "Whole Nepal (Remote & On-Site)",
+                core_services: ["Penetration Testing", "Security Policy Design", "IT Audit"],
+                products: [
+                    { name: "Vulnerability Assessment", base_price: "Rs. 75,000", discount: "10% off" },
+                    { name: "Annual Security Audit", base_price: "Rs. 2,50,000", discount: "15% off" },
+                ]
+            },
+            {
+                id: 'vendor-2',
+                name: "Gorkha Industrial Logistics",
+                verification_status: 'verified', 
+                industry: "Industrial Logistics & Supply Chain",
+                description: "Reliable and transparent transportation solutions for heavy equipment and compliant raw material delivery.",
+                business_type: "Proprietorship",
+                paid_up_capital: "N/A (Sole Proprietor)",
+                vendor_type: "Logistics/Supplier",
+                tax_clearance_status: "Up to 2081/82",
+                pan_no: "606123456",
+                contact_person: "Mr. Ramesh Thapa",
+                contact_role: "General Manager",
+                contact_email: "ramesh.thapa@gorkhaind.com",
+                contact_phone: "98410XXXXX",
+                employees: 12,
+                location: "Birgunj, Parsa",
+                service_area: "Kathmandu-Birgunj Corridor",
+                core_services: ["Heavy Freight", "Customs Clearance Mgmt", "Inventory Management"],
+                products: [
+                    { name: "Kathmandu-Birgunj Freight", base_price: "Rs. 35,000", discount: "Rs. 5,000 off 10+ loads" },
+                    { name: "Customs Clearance Service", base_price: "Rs. 10,000", discount: "20% off 5+ shipments" },
+                ]
+            },
+            {
+                id: 'vendor-3',
+                name: "Pawan General Trading",
+                verification_status: 'pending', 
+                industry: "General Goods Supplier",
+                description: "Initial application received. Tax clearance status is pending final review by SK audit team.",
+                business_type: "Partnership Firm",
+                paid_up_capital: "5 Lakhs NPR",
+                vendor_type: "Wholesaler/Retailer",
+                tax_clearance_status: "Pending 2081/82",
+                pan_no: "404987654",
+                contact_person: "Pawan Sharma",
+                contact_role: "Owner",
+                contact_email: "pawan@generaltrade.com",
+                contact_phone: "9808XXXXXX",
+                employees: 3,
+                location: "Lalitpur",
+                service_area: "Within Valley Only",
+                core_services: ["Office Supplies", "Bulk Stationery", "Cleaning Materials"],
+                products: [
+                    { name: "A4 Paper (Ream)", base_price: "Rs. 500", discount: "Rs. 480 per unit (50+ reams)" },
+                    { name: "Toner Cartridge (Generic)", base_price: "Rs. 1,500", discount: "10% off 10+ units" },
+                ]
+            },
+            {
+                id: 'vendor-4',
+                name: "Nepal Import Brokers",
+                verification_status: 'rejected', 
+                industry: "Import/Export Services",
+                description: "Failed to meet minimum regulatory standards for financial transparency and compliance audit (2081/82).",
+                business_type: "Private Limited Company",
+                paid_up_capital: "10 Lakhs NPR",
+                vendor_type: "Brokerage",
+                tax_clearance_status: "Failed 2081/82",
+                pan_no: "707123123",
+                contact_person: "Mr. Arjun Bista",
+                contact_role: "Director",
+                contact_email: "arjun@importbrokers.com",
+                contact_phone: "9745XXXXXX",
+                employees: 8,
+                location: "New Baneshwor, Kathmandu",
+                service_area: "International Freight",
+                core_services: ["Customs Documentation", "Container Booking"],
+                products: [
+                    { name: "LCL Documentation Service", base_price: "Rs. 15,000", discount: "N/A" },
+                ]
+            }
+        ];
+        
+        // Initial dummy RFQ data
+        let submittedRFQs = [
+            { id: 1, title: "Q1 Freight Services Tender", items: [{name: "Kathmandu-Birgunj Freight", quantity: 5}], status: "Awaiting Quotes", date: "2024/09/15", targetVendors: ["Gorkha Industrial Logistics"] },
+            { 
+                id: 2, 
+                title: "Annual IT Audit RFQ", 
+                items: [{name: "Annual Security Audit", quantity: 1}], 
+                status: "Quotes Received", // Status triggers the "Review Bids" button
+                date: "2024/10/01", 
+                targetVendors: ["Alpha-Tech Solutions Pvt. Ltd.", "InfoSec Nepal Partners", "SecureFuture Consultants"] 
+            },
+            { id: 3, title: "Office Stationery Bulk Purchase", items: [{name: "A4 Paper (Ream)", quantity: 200}], status: "Closed", date: "2024/10/20", targetVendors: ["Pawan General Trading"] }
+        ];
+
+        // --- BIDDING DATA ---
+        // Sample bids for RFQ ID 2 ("Annual IT Audit RFQ"). Total is calculated as quantity * quotedPrice.
+        const demoBids = [
+            {
+                rfqId: 2,
+                vendorName: "Alpha-Tech Solutions Pvt. Ltd.",
+                vendorId: 'vendor-1',
+                itemQuotes: [{ name: "Annual Security Audit", quantity: 1, quotedPrice: 240000 }],
+                submissionDate: "2024/10/05",
+                total: 240000 // Rs. 2,40,000
+            },
+            {
+                rfqId: 2,
+                vendorName: "InfoSec Nepal Partners",
+                vendorId: 'vendor-5',
+                itemQuotes: [{ name: "Annual Security Audit", quantity: 1, quotedPrice: 265000 }],
+                submissionDate: "2024/10/06",
+                total: 265000 // Rs. 2,65,000
+            },
+            {
+                rfqId: 2,
+                vendorName: "SecureFuture Consultants",
+                vendorId: 'vendor-6',
+                itemQuotes: [{ name: "Annual Security Audit", quantity: 1, quotedPrice: 235000 }],
+                submissionDate: "2024/10/07",
+                total: 235000 // Rs. 2,35,000 (The lowest bid)
+            }
+        ];
+
+        // --- VIEW MANAGEMENT ---
+        const views = {
+            'certification': document.getElementById('certification-view'),
+            'pricing': document.getElementById('pricing-view'),
+            'bidding': document.getElementById('bidding-view')
+        };
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        function showView(viewName) {
+            Object.values(views).forEach(view => view.classList.add('hidden'));
+            const selectedView = views[viewName];
+            if (selectedView) {
+                selectedView.classList.remove('hidden');
+                selectedView.classList.add('block');
+            }
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-view') === viewName) {
+                    link.classList.add('active');
+                }
+            });
+            
+            if (viewName === 'pricing') {
+                renderAggregatedPriceList();
+            } else if (viewName === 'bidding') {
+                renderRFQTrackingList();
+            }
+        }
+        
+        // --- STATUS HELPERS ---
+        function getStatusInfo(status) {
+            switch(status) {
+                case 'verified':
+                    return { 
+                        text: 'Verified', colorClass: 'row-verified', dotBg: 'bg-green-500', 
+                        complianceBtn: 'text-green-800 bg-green-200 hover:bg-green-300', 
+                        catalogBtn: 'bg-green-600 text-white hover:bg-green-700' 
+                    };
+                case 'pending':
+                    return { 
+                        text: 'Pending', colorClass: 'row-pending', dotBg: 'bg-yellow-500', 
+                        complianceBtn: 'text-yellow-800 bg-yellow-200 hover:bg-yellow-300', 
+                        catalogBtn: 'bg-yellow-600 text-white hover:bg-yellow-700' 
+                    };
+                case 'rejected':
+                    return { 
+                        text: 'Rejected', colorClass: 'row-rejected', dotBg: 'bg-red-500', 
+                        complianceBtn: 'text-red-800 bg-red-200 hover:bg-red-300', 
+                        catalogBtn: 'bg-red-600 text-white hover:bg-red-700' 
+                    };
+                default:
+                    return { 
+                        text: 'Unknown', colorClass: '', dotBg: 'bg-gray-400', 
+                        complianceBtn: 'bg-gray-200 text-gray-800 hover:bg-gray-300', 
+                        catalogBtn: 'bg-gray-500 text-white hover:bg-gray-600' 
+                    };
+            }
+        }
+        
+        // --- MODAL FUNCTIONS (Detail & Catalog - unchanged) ---
+        
+        function showDetailView(vendor) {
+            const status = getStatusInfo(vendor.verification_status);
+            const modal = document.getElementById('detail-modal');
+            
+            document.getElementById('modal-detail-title').textContent = vendor.name;
+            document.getElementById('modal-detail-industry').textContent = vendor.industry;
+            document.getElementById('modal-detail-description').textContent = vendor.description;
+
+            const detailedData = [
+                { label: "Verification Status", content: status.text, dot: status.dotBg },
+                { label: "Business Type", content: vendor.business_type },
+                { label: "Paid-Up Capital", content: vendor.paid_up_capital },
+                { label: "Vendor Type", content: vendor.vendor_type },
+                { label: "PAN No.", content: vendor.pan_no },
+                { label: "Tax Clearance Status", content: vendor.tax_clearance_status },
+                { label: "No. of Employees", content: vendor.employees },
+                { label: "Contact Person", content: vendor.contact_person + ` (${vendor.contact_role})` },
+                { label: "Email", content: vendor.contact_email },
+                { label: "Phone", content: vendor.contact_phone },
+                { label: "Primary Location", content: vendor.location },
+                { label: "Service Area", content: vendor.service_area },
+            ];
+
+            const detailDataHtml = detailedData.map(item => `
+                <div class="flex flex-col space-y-0.5">
+                    <span class="text-sm font-medium text-gray-600">${item.label}</span>
+                    <span class="font-semibold text-gray-800 flex items-center">
+                        ${item.dot ? `<span class="status-dot ${item.dot}"></span>` : ''}
+                        ${item.content}
+                    </span>
+                </div>
+            `).join('');
+
+            document.getElementById('modal-detail-data').innerHTML = detailDataHtml;
+
+            const servicesHtml = vendor.core_services.map(service => 
+                `<span class="text-sm font-medium text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full">${service}</span>`
+            ).join('');
+            document.getElementById('modal-detail-services').innerHTML = servicesHtml;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function showProductCatalog(vendor) {
+            const modal = document.getElementById('product-modal');
+            document.getElementById('modal-vendor-name').textContent = `Catalog & Volume Pricing for ${vendor.name}`;
+            const productListBody = document.getElementById('modal-product-list');
+            productListBody.innerHTML = ''; 
+
+            if (vendor.products && vendor.products.length > 0) {
+                vendor.products.forEach(product => {
+                    productListBody.innerHTML += `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${product.name}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${product.base_price}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${product.discount}</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                productListBody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500">No public product or volume pricing is available for this vendor.</td></tr>`;
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        // --- RFQ Bid Review Modal ---
+        
+        function showBidReviewModal(rfq) {
+            if (rfq.status !== 'Quotes Received') {
+                console.warn(`Cannot review bids for RFQ #${rfq.id}. Status is not 'Quotes Received'.`);
+                return;
+            }
+            
+            const modal = document.getElementById('bid-review-modal');
+            document.getElementById('bid-review-title').textContent = `Review Bids: ${rfq.title} (RFQ #${rfq.id})`;
+            
+            const bidComparisonList = document.getElementById('bid-comparison-list');
+            bidComparisonList.innerHTML = '';
+            
+            // 1. Get relevant bids
+            let bids = demoBids.filter(bid => bid.rfqId === rfq.id);
+            
+            // 2. Sort bids by total price (lowest total first)
+            bids.sort((a, b) => a.total - b.total);
+            
+            // 3. Render item summary
+            const itemSummaryHtml = rfq.items.map(item => 
+                `<span class="text-sm font-medium text-gray-700 bg-gray-100 px-3 py-1 rounded-full">${item.name} (Qty: ${item.quantity})</span>`
+            ).join('');
+            document.getElementById('quoted-items-summary').innerHTML = itemSummaryHtml;
+
+            // 4. Render bid comparison table
+            if (bids.length > 0) {
+                bids.forEach((bid, index) => {
+                    const rank = index + 1;
+                    const rankClass = rank === 1 ? 'font-extrabold text-green-700' : 'font-semibold text-gray-700';
+                    
+                    // Format total price (using Nepalese formatting for clarity)
+                    const formattedTotal = 'Rs. ' + bid.total.toLocaleString('en-IN');
+                    
+                    bidComparisonList.innerHTML += `
+                        <tr class="${rank === 1 ? 'bg-green-50/70 border-2 border-green-300' : 'hover:bg-gray-50'}">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm ${rankClass}">${rank}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${bid.vendorName}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-right font-extrabold text-lg ${rank === 1 ? 'text-green-800' : 'text-gray-900'}">${formattedTotal}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${bid.submissionDate}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <button class="px-3 py-1 text-xs bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-lg hover:bg-indigo-200 transition">
+                                    Accept Bid
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } else {
+                bidComparisonList.innerHTML = `<tr><td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">No bids received for this RFQ yet.</td></tr>`;
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // --- CERTIFICATION HUB (Vendor List) RENDERING (Unchanged) ---
+
+        const vendorListContainer = document.getElementById('vendor-list');
+
+        function createVendorRow(vendor) {
+            const status = getStatusInfo(vendor.verification_status);
+            const vendorJson = JSON.stringify(vendor).replace(/'/g, "\\'");
+
+            return `
+                <div class="grid grid-cols-12 gap-4 py-4 px-6 border-b last:border-b-0 border-gray-100 items-center transition duration-200 hover:bg-gray-50 ${status.colorClass}">
+                    
+                    <div class="col-span-1 hidden md:block">
+                        <span class="status-dot ${status.dotBg}"></span>
+                        <span class="text-xs text-gray-600">${status.text}</span>
+                    </div>
+
+                    <div class="col-span-12 md:col-span-4 flex flex-col">
+                        <p class="font-bold text-gray-900">${vendor.name}</p>
+                        <p class="text-sm text-indigo-600">${vendor.industry}</p>
+                        <div class="md:hidden mt-1 flex items-center">
+                            <span class="status-dot ${status.dotBg}"></span>
+                            <span class="text-sm text-gray-600">${status.text}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-span-12 md:col-span-4 text-sm text-gray-600 hidden md:block">
+                        <p class="truncate font-medium">${vendor.description}</p>
+                        <p class="text-xs text-gray-500">${vendor.contact_person} (${vendor.contact_phone})</p>
+                    </div>
+
+                    <div class="col-span-12 md:col-span-3 flex justify-end gap-3 w-full">
+                        <button onclick='showDetailView(${vendorJson})'
+                            class="flex-1 md:flex-none px-3 py-1.5 text-sm font-semibold rounded-lg shadow-sm transition ${status.complianceBtn}">
+                            View Detail
+                        </button>
+                        <button onclick='showProductCatalog(${vendorJson})'
+                            class="flex-1 md:flex-none px-3 py-1.5 text-sm font-semibold rounded-lg shadow-md transition ${status.catalogBtn}">
+                            Catalogue
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        vendorData.forEach(vendor => {
+            const rowHtml = createVendorRow(vendor);
+            vendorListContainer.innerHTML += rowHtml;
+        });
+        
+        // --- PRICE LISTING HUB (Aggregated Price List) RENDERING (UPDATED) ---
+
+        function renderAggregatedPriceList() {
+            const priceListBody = document.getElementById('aggregated-price-list');
+            priceListBody.innerHTML = ''; 
+            
+            const productAggregates = {};
+
+            vendorData.forEach(vendor => {
+                // Only consider verified and pending vendors for market averages
+                if (vendor.verification_status === 'verified' || vendor.verification_status === 'pending') {
+                    if (vendor.products && vendor.products.length > 0) {
+                        vendor.products.forEach(product => {
+                            if (!productAggregates[product.name]) {
+                                productAggregates[product.name] = {
+                                    count: 0,
+                                    priceSum: 0,
+                                    discountSum: 0
+                                };
+                            }
+                            
+                            // Add to count and sum for averages
+                            productAggregates[product.name].count++;
+                            productAggregates[product.name].priceSum += parsePrice(product.base_price);
+                            productAggregates[product.name].discountSum += parseDiscount(product.discount);
+                        });
+                    }
+                }
+            });
+
+            const aggregatedProducts = Object.keys(productAggregates).map(productName => {
+                const data = productAggregates[productName];
+                const avgPrice = data.priceSum / data.count;
+                const avgDiscount = data.discountSum / data.count;
+
+                return {
+                    name: productName,
+                    vendorCount: data.count,
+                    averagePrice: Math.round(avgPrice),
+                    averageDiscount: Math.round(avgDiscount * 10) / 10 // Round to one decimal place
+                };
+            });
+
+            if (aggregatedProducts.length === 0) {
+                priceListBody.innerHTML = `<tr><td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">No public pricing data available across verified/pending vendors.</td></tr>`;
+                return;
+            }
+
+            // Render the aggregated data
+            aggregatedProducts.forEach(product => {
+                // Formatting for Nepal context
+                const formattedPrice = 'Rs. ' + product.averagePrice.toLocaleString('en-IN');
+                const formattedDiscount = product.averageDiscount > 0 ? `${product.averageDiscount}%` : 'N/A';
+                
+                priceListBody.innerHTML += `
+                    <tr>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">${product.name}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700 font-semibold">${product.vendorCount}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700 text-right font-bold text-indigo-700">${formattedPrice}</td>
+                        <td class="px-6 py-4 text-sm text-gray-600">${formattedDiscount}</td>
+                    </tr>
+                `;
+            });
+        }
+        
+        // --- RFQ CREATION & TRACKING LOGIC ---
+        
+        let selectableProducts = [];
+
+        function aggregateSelectableProducts() {
+            const productMap = {};
+            vendorData.filter(v => v.verification_status !== 'rejected').forEach(vendor => {
+                vendor.products.forEach(product => {
+                    if (!productMap[product.name]) {
+                        productMap[product.name] = { 
+                            name: product.name, 
+                            vendors: [vendor.name] 
+                        };
+                    } else {
+                        if (!productMap[product.name].vendors.includes(vendor.name)) {
+                            productMap[product.name].vendors.push(vendor.name);
+                        }
+                    }
+                });
+            });
+            selectableProducts = Object.values(productMap);
+        }
+        
+        function renderRfqFormItems() {
+            aggregateSelectableProducts();
+            const rfqItemList = document.getElementById('rfq-item-list');
+            rfqItemList.innerHTML = '';
+            
+            if (selectableProducts.length === 0) {
+                rfqItemList.innerHTML = `<tr><td colspan="3" class="px-4 py-3 text-center text-sm text-gray-500">No products available from certified vendors to quote.</td></tr>`;
+                return;
+            }
+
+            selectableProducts.forEach((product, index) => {
+                rfqItemList.innerHTML += `
+                    <tr>
+                        <td class="px-4 py-2 text-sm font-medium text-gray-900">${product.name}</td>
+                        <td class="px-4 py-2 text-xs text-gray-600">${product.vendors.join(', ')}</td>
+                        <td class="px-4 py-2 text-sm text-gray-700">
+                            <input type="number" name="quantity-${index}" 
+                                data-product-name="${product.name}" 
+                                data-target-vendors="${product.vendors.join('|')}"
+                                min="1" placeholder="0" 
+                                class="w-full border-gray-300 rounded-md shadow-sm p-1 text-center text-sm" />
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function showRFQModal() {
+            renderRfqFormItems();
+            document.getElementById('rfq-title').value = ''; // Clear previous title
+            document.getElementById('rfq-modal').classList.remove('hidden');
+            document.getElementById('rfq-modal').classList.add('flex');
+        }
+
+        document.getElementById('rfq-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const rfqTitle = document.getElementById('rfq-title').value.trim();
+            const itemInputs = document.querySelectorAll('#rfq-item-list input[type="number"]');
+            let itemsForRFQ = [];
+
+            itemInputs.forEach(input => {
+                const quantity = parseInt(input.value, 10);
+                if (quantity > 0) {
+                    itemsForRFQ.push({
+                        name: input.getAttribute('data-product-name'),
+                        quantity: quantity,
+                    });
+                }
+            });
+
+            if (!rfqTitle) {
+                console.error("RFQ Title is required.");
+                return;
+            }
+
+            if (itemsForRFQ.length === 0) {
+                console.error("Please specify a quantity for at least one item.");
+                return;
+            }
+
+            // SIMULATE RFQ CREATION
+            const newRFQ = {
+                id: submittedRFQs.length + 1,
+                title: rfqTitle,
+                items: itemsForRFQ,
+                status: "Awaiting Quotes", // New RFQs start as Awaiting
+                date: new Date().toLocaleDateString('en-GB'),
+                targetVendors: itemsForRFQ.flatMap(item => {
+                    const productData = selectableProducts.find(p => p.name === item.name);
+                    return productData ? productData.vendors : [];
+                }).filter((value, index, self) => self.indexOf(value) === index)
+            };
+
+            submittedRFQs.unshift(newRFQ);
+            document.getElementById('rfq-modal').classList.add('hidden');
+            renderRFQTrackingList();
+        });
+        
+        // Function to render the RFQ tracking list in the Bidding view (UPDATED)
+        function renderRFQTrackingList() {
+            const rfqListContainer = document.getElementById('rfq-tracking-list');
+            const activeRfqCountEl = document.getElementById('active-rfq-count');
+            
+            // Update counter (only count 'Awaiting Quotes')
+            const activeCount = submittedRFQs.filter(rfq => rfq.status === 'Awaiting Quotes').length;
+            activeRfqCountEl.textContent = activeCount;
+
+            rfqListContainer.innerHTML = '';
+            
+            if (submittedRFQs.length === 0) {
+                rfqListContainer.innerHTML = `<p class="text-gray-500 italic p-4 border rounded-lg">No RFQs have been submitted yet.</p>`;
+                return;
+            }
+
+            submittedRFQs.forEach(rfq => {
+                let statusColor = 'bg-indigo-100 text-indigo-700';
+                let actionButton = '';
+                const rfqJson = JSON.stringify(rfq).replace(/'/g, "\\'"); // Escaping JSON for use in onclick
+
+                if (rfq.status === 'Quotes Received') {
+                    statusColor = 'bg-yellow-100 text-yellow-700';
+                    actionButton = `
+                        <button onclick='showBidReviewModal(${rfqJson})'
+                            class="px-3 py-1.5 text-sm font-semibold bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition shadow-md">
+                            Review Bids
+                        </button>
+                    `;
+                } else if (rfq.status === 'Closed') {
+                    statusColor = 'bg-gray-100 text-gray-700';
+                    actionButton = `
+                        <button class="px-3 py-1.5 text-sm font-semibold bg-gray-300 text-gray-700 rounded-lg shadow-sm cursor-default">
+                            View Outcome
+                        </button>
+                    `;
+                } else { // Awaiting Quotes
+                     actionButton = `
+                        <button class="px-3 py-1.5 text-sm font-semibold bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition shadow-md">
+                            View Details
+                        </button>
+                    `;
+                }
+
+                const itemSummary = rfq.items.map(item => 
+                    `<span class="font-semibold">${item.name}</span> (x${item.quantity})`
+                ).join(', ');
+
+                rfqListContainer.innerHTML += `
+                    <div class="p-4 border rounded-lg bg-white shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center">
+                        <div class="mb-2 md:mb-0">
+                            <h4 class="text-lg font-bold text-gray-900">${rfq.title} <span class="text-sm font-normal text-gray-500 ml-2">#${rfq.id}</span></h4>
+                            <p class="text-sm text-gray-600 truncate max-w-xl">${itemSummary}</p>
+                            <p class="text-xs text-gray-500 mt-1">Targeted Vendors: ${rfq.targetVendors.length} in total</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-xs font-medium px-3 py-1 rounded-full ${statusColor}">${rfq.status}</span>
+                            <span class="text-sm text-gray-500 hidden sm:block">${rfq.date}</span>
+                            ${actionButton}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            showView('certification');
+            renderRFQTrackingList();
+        });
+
+    </script>
+</body>
+</html>
